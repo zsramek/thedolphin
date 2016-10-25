@@ -1,4 +1,4 @@
-# thedolphin
+# The Dolphin
 
 Arduino and related code for The Dolphin
 ZRcubed
