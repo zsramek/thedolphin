@@ -18,6 +18,15 @@ boolean S6 = false;
 boolean S7 = false;
 boolean steps[8] = {S0, S1, S2, S3, S4, S5, S6, S7};
 
+boolean clicked0 = false;
+boolean clicked1 = false;
+boolean clicked2 = false;
+boolean clicked3 = false;
+boolean clicked4 = false;
+boolean clicked5 = false;
+boolean clicked6 = false;
+boolean clicked7 = false;
+
 //Run/Stop Boolean
 boolean run = false;
 
@@ -75,39 +84,8 @@ void loop()
   //What pin are we writing to or reading from?
   int pin = 0;
   
-  //Check for button clicks
-  if (digitalRead(23) == HIGH)
-  {
-    steps[0] = !steps[0];
-  }
-  if (digitalRead(25) == HIGH)
-  {
-    steps[1] = !steps[1];
-  }
-  if (digitalRead(27) == HIGH)
-  {
-    steps[2] = !steps[2];
-  }
-  if (digitalRead(29) == HIGH)
-  {
-    steps[3] = !steps[3];
-  }
-  if (digitalRead(31) == HIGH)
-  {
-    steps[4] = !steps[4];
-  }
-  if (digitalRead(33) == HIGH)
-  {
-    steps[5] = !steps[5];
-  }
-  if (digitalRead(35) == HIGH)
-  {
-    steps[6] = !steps[6];
-  }
-  if (digitalRead(37) == HIGH)
-  {
-    steps[7] = !steps[7];
-  }
+   //Check for button clicks
+   pollButtons();
   
   Serial.println(run);
   
@@ -188,4 +166,86 @@ void loop()
 //  }
 }
 
+void pollButtons()
+{
+  if (digitalRead(23) == HIGH && clicked0 == false)
+  {
+    steps[0] = !steps[0];
+    clicked0 = true;
+  }
+  else if (digitalRead(23) == LOW && clicked0 == true)
+  {
+      clicked0 = false;
+  }
+  
+  if (digitalRead(25) == HIGH && clicked1 == false)
+  {
+    steps[1] = !steps[1];
+    clicked1 = true;
+  }
+  else if (digitalRead(25) == LOW && clicked1 == true)
+  {
+    clicked1 = false;
+  }
+  
+  if (digitalRead(27) == HIGH && clicked2 == false)
+  {
+    steps[2] = !steps[2];
+    clicked2 = true;
+  }
+  else if (digitalRead(27) == LOW && clicked2 == true)
+  {
+    clicked2 = false;
+  }
+  
+  if (digitalRead(29) == HIGH && clicked3 == false)
+  {
+    steps[3] = !steps[3];
+    clicked3 = true;
+  }
+  else if (digitalRead(29) == LOW && clicked3 == true)
+  {
+    clicked3 = false;
+  }
+  
+  if (digitalRead(31) == HIGH && clicked4 == false)
+  {
+    steps[4] = !steps[4];
+    clicked4 = true;
+  }
+  else if (digitalRead(31) == LOW && clicked4 == true)
+  {
+    clicked4 = false;
+  }
+  
+  if (digitalRead(33) == HIGH && clicked5 == false)
+  {
+    steps[5] = !steps[5];
+    clicked5 = true;
+  }
+  else if (digitalRead(33) == LOW && clicked5 == true)
+  {
+    clicked5 = false;
+  }
+  
+  if (digitalRead(35) == HIGH && clicked6 == false)
+  {
+    steps[6] = !steps[6];
+    clicked6 = true;
+  }
+  else if (digitalRead(35) == LOW && clicked6 == true)
+  {
+    clicked6 = false;
+  }
+  
+  if (digitalRead(37) == HIGH && clicked7 == false)
+  {
+    steps[7] = !steps[7];
+    clicked7 = true;
+  }
+  else if (digitalRead(37) == HIGH && clicked7 == true)
+  {
+    clicked7 = false;
+  }
+}
 
