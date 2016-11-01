@@ -7,7 +7,7 @@
 const int startStop = 52;
 const int triggerOut = 53;
 
-//Step Booleans
+//currentStep Booleans
 boolean S0 = false;
 boolean S1 = false;
 boolean S2 = false;
@@ -16,8 +16,9 @@ boolean S4 = false;
 boolean S5 = false;
 boolean S6 = false;
 boolean S7 = false;
-boolean steps[8] = {S0, S1, S2, S3, S4, S5, S6, S7};
+boolean currentSteps[8] = {S0, S1, S2, S3, S4, S5, S6, S7};
 
+boolean runClicked = false;
 boolean clicked0 = false;
 boolean clicked1 = false;
 boolean clicked2 = false;
@@ -30,12 +31,12 @@ boolean clicked7 = false;
 //Run/Stop Boolean
 boolean run = false;
 
-//Current Step
-int step = 0;
+//Current currentStep
+int currentStep = 0;
 
 //Delay Counter & Max
 int count = 0;
-const int maxCount = 800000; //16MHz clock -> 16 Million
+const int maxCount = 1000; //16MHz clock -> 16 Million
 
 void setup()
 {
@@ -45,7 +46,7 @@ void setup()
   //Trigger Output
   pinMode(53, OUTPUT);
   
-  //Inputs for step buttons
+  //Inputs for currentStep buttons
   pinMode(23, INPUT);
   pinMode(25, INPUT);
   pinMode(27, INPUT);
@@ -55,7 +56,7 @@ void setup()
   pinMode(35, INPUT);
   pinMode(37, INPUT);
   
-  //Outputs for step LEDs
+  //Outputs for currentStep LEDs
   pinMode(22, OUTPUT);
   pinMode(24, OUTPUT);
   pinMode(26, OUTPUT);
@@ -87,49 +88,89 @@ void loop()
    //Check for button clicks
    pollButtons();
   
-  Serial.println(run);
+//  Serial.print("step: ");
+//  Serial.println(currentStep);
+//  Serial.print("run ");
+//  Serial.println(run);
+//  Serial.print("count: ");
+//  Serial.println(count);
   
-//  //Set the LEDs based on the status of the step
-//   for (int i = 0; i < 7; i++)
-//   {
-//     pin = i * 2 + 22; 
-//     if (steps[i] == true)
-//     {
-//       digitalWrite(pin, HIGH);
-//     }
-//     else
-//     {
-//       digitalWrite(pin, LOW);
-//     }
-//   }
+  //Set the LEDs based on the status of the currentStep
+   for (int i = 0; i < 7; i++)
+   {
+     pin = i * 2 + 22; 
+     if (currentSteps[i] == true)
+     {
+       digitalWrite(pin, HIGH);
+     }
+     else
+     {
+       digitalWrite(pin, LOW);
+     }
+   }
+  
+  digitalWrite(triggerOut, LOW);
   
   //Check whether we should start or stop running
-  if (digitalRead(startStop) == HIGH)
+  if (digitalRead(startStop) == HIGH && runClicked == false)
   {
     run = !run;
+    runClicked = true;
+  }
+  else if (digitalRead(startStop) == LOW && runClicked == true)
+  {
+    runClicked = false;
+    count = 0;
+    currentStep = 0;
   }
   
+  //Do we run?
   if (run)
   {
     if (count >= maxCount)
     {
       count = 0;
-      //Go to the next step
-      if (step < 7)
+      //Go to the next currentStep
+      if (currentStep < 7)
       {
-        step++;
+        currentStep++;
       }
       else
       {
-        step = 0;
+        currentStep = 0;
       }
       
-      //Set the output based on the step's value
-      //Flip the LED for the current step
-      pin = step * 2 + 22;
-      if (steps[step] == true)
+//      //Set the output based on the currentStep's value
+//      //Flip the LED for the current currentStep
+//      pin = currentStep * 2 + 22;
+//      if (currentSteps[currentStep] == true)
+//      {
+//        digitalWrite(triggerOut, HIGH);
+//        //digitalWrite(pin, LOW);
+//      }
+//      else
+//      {
+//        digitalWrite(triggerOut, LOW);
+//        //digitalWrite(pin, HIGH);
+//      }
+      
+    }
+    else
+    {
+      count++;
+            //Set the output based on the currentStep's value
+      //Flip the LED for the current currentStep
+      pin = currentStep * 2 + 22;
+      if (currentSteps[currentStep] == true)
       {
-        digitalWrite(triggerOut, HIGH);
+        if (count < maxCount / 2)
+        {
+          digitalWrite(triggerOut, HIGH);
+        }
+        else
+        {
+           digitalWrite(triggerOut, LOW);
+        }
         digitalWrite(pin, LOW);
       }
       else
@@ -137,23 +178,18 @@ void loop()
         digitalWrite(triggerOut, LOW);
         digitalWrite(pin, HIGH);
       }
-      
-    }
-    else
-    {
-      count++;
     }
     
   }
 //  else
 //  {
-    //  //Set the LEDs based on the status of the step
+    //  //Set the LEDs based on the status of the currentStep
 //   for (int i = 0; i < 7; i++)
 //   {
-//     if (i != step)
+//     if (i != currentStep)
 //     {
 //       pin = i * 2 + 22; 
-//       if (steps[i] == true)
+//       if (currentSteps[i] == true)
 //       {
 //         digitalWrite(pin, HIGH);
 //       }
@@ -167,10 +203,10 @@ void loop()
 }
 
 void pollButtons()
-{
+{  
   if (digitalRead(23) == HIGH && clicked0 == false)
   {
-    steps[0] = !steps[0];
+    currentSteps[0] = !currentSteps[0];
     clicked0 = true;
   }
   else if (digitalRead(23) == LOW && clicked0 == true)
@@ -180,7 +216,7 @@ void pollButtons()
   
   if (digitalRead(25) == HIGH && clicked1 == false)
   {
-    steps[1] = !steps[1];
+    currentSteps[1] = !currentSteps[1];
     clicked1 = true;
   }
   else if (digitalRead(25) == LOW && clicked1 == true)
@@ -190,7 +226,7 @@ void pollButtons()
   
   if (digitalRead(27) == HIGH && clicked2 == false)
   {
-    steps[2] = !steps[2];
+    currentSteps[2] = !currentSteps[2];
     clicked2 = true;
   }
   else if (digitalRead(27) == LOW && clicked2 == true)
@@ -200,7 +236,7 @@ void pollButtons()
   
   if (digitalRead(29) == HIGH && clicked3 == false)
   {
-    steps[3] = !steps[3];
+    currentSteps[3] = !currentSteps[3];
     clicked3 = true;
   }
   else if (digitalRead(29) == LOW && clicked3 == true)
@@ -210,7 +246,7 @@ void pollButtons()
   
   if (digitalRead(31) == HIGH && clicked4 == false)
   {
-    steps[4] = !steps[4];
+    currentSteps[4] = !currentSteps[4];
     clicked4 = true;
   }
   else if (digitalRead(31) == LOW && clicked4 == true)
@@ -220,7 +256,7 @@ void pollButtons()
   
   if (digitalRead(33) == HIGH && clicked5 == false)
   {
-    steps[5] = !steps[5];
+    currentSteps[5] = !currentSteps[5];
     clicked5 = true;
   }
   else if (digitalRead(33) == LOW && clicked5 == true)
@@ -230,7 +266,7 @@ void pollButtons()
   
   if (digitalRead(35) == HIGH && clicked6 == false)
   {
-    steps[6] = !steps[6];
+    currentSteps[6] = !currentSteps[6];
     clicked6 = true;
   }
   else if (digitalRead(35) == LOW && clicked6 == true)
@@ -240,7 +276,7 @@ void pollButtons()
   
   if (digitalRead(37) == HIGH && clicked7 == false)
   {
-    steps[7] = !steps[7];
+    currentSteps[7] = !currentSteps[7];
     clicked7 = true;
   }
   else if (digitalRead(37) == HIGH && clicked7 == true)
