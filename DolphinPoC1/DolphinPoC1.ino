@@ -139,26 +139,12 @@ void loop()
       {
         currentStep = 0;
       }
-      
-//      //Set the output based on the currentStep's value
-//      //Flip the LED for the current currentStep
-//      pin = currentStep * 2 + 22;
-//      if (currentSteps[currentStep] == true)
-//      {
-//        digitalWrite(triggerOut, HIGH);
-//        //digitalWrite(pin, LOW);
-//      }
-//      else
-//      {
-//        digitalWrite(triggerOut, LOW);
-//        //digitalWrite(pin, HIGH);
-//      }
-      
     }
     else
     {
       count++;
-            //Set the output based on the currentStep's value
+      
+      //Set the output based on the currentStep's value
       //Flip the LED for the current currentStep
       pin = currentStep * 2 + 22;
       if (currentSteps[currentStep] == true)
@@ -178,30 +164,12 @@ void loop()
         digitalWrite(triggerOut, LOW);
         digitalWrite(pin, HIGH);
       }
-    }
-    
+    } 
   }
-//  else
-//  {
-    //  //Set the LEDs based on the status of the currentStep
-//   for (int i = 0; i < 7; i++)
-//   {
-//     if (i != currentStep)
-//     {
-//       pin = i * 2 + 22; 
-//       if (currentSteps[i] == true)
-//       {
-//         digitalWrite(pin, HIGH);
-//       }
-//       else
-//       {
-//         digitalWrite(pin, LOW);
-//       }
-//     }
-//   }
-//  }
 }
 
+
+//This function updates all the LED states based on their associated booleans
 void pollButtons()
 {  
   if (digitalRead(23) == HIGH && clicked0 == false)
