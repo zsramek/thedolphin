@@ -16,6 +16,8 @@ boolean S4 = false;
 boolean S5 = false;
 boolean S6 = false;
 boolean S7 = false;
+
+//Rename this!
 boolean currentSteps[8] = {
   S0, S1, S2, S3, S4, S5, S6, S7};
 
