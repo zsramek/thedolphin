@@ -36,6 +36,7 @@ boolean run = false;
 
 //Current currentStep
 int currentStep = 0;
+int pin = 0;
 
 //Delay Counter & Max
 int count = 0;
@@ -87,7 +88,7 @@ void setup()
 void loop()
 {
   //What pin are we writing to or reading from?
-  int pin = 0;
+  pin = 0;
 
   //Check for button clicks
   pollButtons();
@@ -110,7 +111,7 @@ void loop()
   runOrStop();
 
   //Do we run?
-  run();
+  runSeq();
 
 }
 
@@ -232,7 +233,7 @@ void runOrStop()
 }
 
 
-void run()
+void runSeq()
 {
   if (run)
   {
@@ -258,7 +259,7 @@ void run()
       pin = currentStep * 2 + 22;
       if (currentSteps[currentStep] == true)
       {
-        if (count < maxCount / 2)
+        if (count < maxCount / 200)
         {
           digitalWrite(triggerOut, HIGH);
         }
