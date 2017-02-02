@@ -1,4 +1,3 @@
-
 //TODO: Debounce the buttons
 
 //LEDS
@@ -9,8 +8,10 @@ boolean lights[2][2];
 //BUTTONS
 int buttonRow = 1;
 int button = 0;
+boolean clicked1 = false;
 boolean clicked2 = false;
 boolean clicked3 = false;
+boolean clicked4 = false;
 
 void setup()
 {
@@ -59,13 +60,35 @@ void scanButtons()
     digitalWrite(11, LOW);
     if (digitalRead(8) == HIGH)
     {
-      button = 1;
-      lights[0][0] = !lights[0][0];
+      if (clicked1 == false)
+      {
+        button = 1;
+        lights[0][0] = !lights[0][0];
+        clicked1 = true;
+      }
     }
-    else if (digitalRead(9) == HIGH)
+    else if (digitalRead(8) == LOW)
     {
-      button = 2;
-      lights[0][1] = LOW;
+      if (clicked1 == true)
+      {
+        clicked1 = false;
+      }
+    }
+    if (digitalRead(9) == HIGH)
+    {
+      if (clicked2 == false)
+      {
+        button = 2;
+        lights[0][1] = LOW;
+        clicked2 = true;
+      }
+    }
+    else if (digitalRead(9) == LOW)
+    {
+      if (clicked2 == true)
+      {
+        clicked2 = false;
+      }
     }
     buttonRow = 2; //Must come after
   }
@@ -75,13 +98,35 @@ void scanButtons()
     digitalWrite(10, LOW);
     if (digitalRead(8) == HIGH)
     {
-      button = 3;
-      lights[1][0] = LOW;
+      if (clicked3 == false)
+      {
+        button = 3;
+        lights[1][0] = LOW;
+        clicked3 = true;
+      }
     }
-    else if (digitalRead(9) == HIGH)
+    else if(digitalRead(8) == LOW)
     {
-      button = 4;
-      lights[1][1] = LOW;
+      if (clicked3 == true)
+      {
+        clicked3 = false;
+      }
+    }
+    if (digitalRead(9) == HIGH)
+    {
+      if (clicked4 == false)
+      {
+        button = 4;
+        lights[1][1] = LOW;
+        clicked4 = true;
+      }
+    }
+    else if (digitalRead(9) == LOW)
+    {
+      if (clicked4 == true)
+      {
+        clicked4 = false;
+      }
     }
     buttonRow = 1;
   }
