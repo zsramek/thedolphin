@@ -1,6 +1,8 @@
 //LEDS
-const int row[4] = {24, 25, 26, 27};
-const int col[4] = {28, 29, 30, 31};
+const int row[4] = {
+  24, 25, 26, 27};
+const int col[4] = {
+  28, 29, 30, 31};
 boolean lights[4][4];
 
 int ledRow0 = 24;
@@ -24,6 +26,14 @@ boolean clicked4 = false;
 boolean clicked5 = false;
 boolean clicked6 = false;
 boolean clicked7 = false;
+boolean clicked8 = false;
+boolean clicked9 = false;
+boolean clicked10 = false;
+boolean clicked11 = false;
+boolean clicked12 = false;
+boolean clicked13 = false;
+boolean clicked14 = false;
+boolean clicked15 = false;
 
 int buttonIn0 = 40;
 int buttonIn1 = 41;
@@ -69,22 +79,22 @@ void ledSetup()
   pinMode(ledRow1, OUTPUT);
   pinMode(ledRow2, OUTPUT);
   pinMode(ledRow3, OUTPUT);
-  
+
   pinMode(ledCol0, OUTPUT);
   pinMode(ledCol1, OUTPUT);
   pinMode(ledCol2, OUTPUT);
   pinMode(ledCol3, OUTPUT);
-  
+
   digitalWrite(ledRow0, LOW);
   digitalWrite(ledRow1, LOW);
   digitalWrite(ledRow2, LOW);
   digitalWrite(ledRow3, LOW);
-  
+
   digitalWrite(ledCol0, HIGH);
   digitalWrite(ledCol1, HIGH);
   digitalWrite(ledCol2, HIGH);
   digitalWrite(ledCol3, HIGH);
-  
+
   lights[0][0] = HIGH;
   lights[0][1] = HIGH;
   lights[0][2] = HIGH;
@@ -115,7 +125,7 @@ void scanButtons()
     digitalWrite(buttonOut1, LOW);
     digitalWrite(buttonOut2, LOW);
     digitalWrite(buttonOut3, LOW);
-    
+
     if (digitalRead(buttonIn0) == HIGH)
     {
       if (clicked0 == false)
@@ -132,9 +142,9 @@ void scanButtons()
         clicked0 = false;
       }
     }
-    
+
     //~~~~
-    
+
     if (digitalRead(buttonIn1) == HIGH)
     {
       if (clicked1 == false)
@@ -151,9 +161,9 @@ void scanButtons()
         clicked1 = false;
       }
     }
-    
+
     //~~~
-    
+
     if (digitalRead(buttonIn2) == HIGH)
     {
       if (clicked2 == false)
@@ -172,7 +182,7 @@ void scanButtons()
     }
 
     //~~~
-    
+
     if (digitalRead(buttonIn3) == HIGH)
     {
       if (clicked3 == false)
@@ -189,52 +199,260 @@ void scanButtons()
         clicked3 = false;
       }
     }    
-    
+
     buttonRow = 2; //Must come after
   }
-  
+
   //~~~~~~~~~~~~~~2~~~~~~~~~~~~~~~
-  
   else if (buttonRow == 2)
   {
     digitalWrite(buttonOut1, HIGH);
     digitalWrite(buttonOut0, LOW);
     digitalWrite(buttonOut2, LOW);
     digitalWrite(buttonOut3, LOW);
-    
-    if (digitalRead(8) == HIGH)
-    {
-      if (clicked3 == false)
-      {
-        button = 3;
-        lights[1][0] = LOW;
-        clicked3 = true;
-      }
-    }
-    else if(digitalRead(8) == LOW)
-    {
-      if (clicked3 == true)
-      {
-        clicked3 = false;
-      }
-    }
-    if (digitalRead(9) == HIGH)
+
+    if (digitalRead(buttonIn0) == HIGH)
     {
       if (clicked4 == false)
       {
-        button = 4;
-        lights[1][1] = LOW;
+        button = 5;
+        lights[1][0] = !lights[1][0];
         clicked4 = true;
       }
     }
-    else if (digitalRead(9) == LOW)
+    else if (digitalRead(buttonIn0) == LOW)
     {
       if (clicked4 == true)
       {
         clicked4 = false;
       }
     }
-    buttonRow = 1;
+
+    //~~~
+
+    if (digitalRead(buttonIn1) == HIGH)
+    {
+      if (clicked5 == false)
+      {
+        button = 6;
+        lights[1][1] = !lights[1][1];
+        clicked5 = true;
+      }
+    }
+    else if (digitalRead(buttonIn1) == LOW)
+    {
+      if (clicked5 == true)
+      {
+        clicked5 = false;
+      }
+    }
+
+    //~~~
+
+    if (digitalRead(buttonIn2) == HIGH)
+    {
+      if (clicked6 == false)
+      {
+        button = 7;
+        lights[1][2] = !lights[1][2];
+        clicked6 = true;
+      }
+    }
+    else if (digitalRead(buttonIn2) == LOW)
+    {
+      if (clicked6 == true)
+      {
+        clicked6 = false;
+      }
+    }
+
+    //~~~
+
+    if (digitalRead(buttonIn3) == HIGH)
+    {
+      if (clicked7 == false)
+      {
+        button = 8;
+        lights[1][3] = !lights[1][3];
+        clicked7 = true;
+      }
+    }
+    else if (digitalRead(buttonIn3) == LOW)
+    {
+      if (clicked7 == true)
+      {
+        clicked7 = false;
+      }
+    }
+    buttonRow = 3; 
+  }
+
+  //~~~~~~~~~~~~~~3~~~~~~~~~~~~~~~
+  if (buttonRow == 3)
+  {
+    digitalWrite(buttonOut2, HIGH);
+    digitalWrite(buttonOut0, LOW);
+    digitalWrite(buttonOut1, LOW);
+    digitalWrite(buttonOut3, LOW);
+
+    if (digitalRead(buttonIn0) == HIGH)
+    {
+      if (clicked8 == false)
+      {
+        button = 9;
+        lights[2][0] = !lights[2][0];
+        clicked8 = true;
+      }
+    }
+    else if (digitalRead(buttonIn0) == LOW)
+    {
+      if (clicked8 == true)
+      {
+        clicked8 = false;
+      }
+    }
+
+    //~~~~
+
+    if (digitalRead(buttonIn1) == HIGH)
+    {
+      if (clicked9 == false)
+      {
+        button = 10;
+        lights[2][1] = !lights[2][1];
+        clicked9 = true;
+      }
+    }
+    else if (digitalRead(buttonIn1) == LOW)
+    {
+      if (clicked9 == true)
+      {
+        clicked9 = false;
+      }
+    }
+
+    //~~~
+
+    if (digitalRead(buttonIn2) == HIGH)
+    {
+      if (clicked10 == false)
+      {
+        button = 11;
+        lights[2][2] = !lights[2][2];
+        clicked10 = true;
+      }
+    }
+    else if (digitalRead(buttonIn2) == LOW)
+    {
+      if (clicked10 == true)
+      {
+        clicked10 = false;
+      }
+    }
+
+    //~~~
+
+    if (digitalRead(buttonIn3) == HIGH)
+    {
+      if (clicked11 == false)
+      {
+        button = 12;
+        lights[2][3] = !lights[2][3];
+        clicked11 = true;
+      }
+    }
+    else if (digitalRead(buttonIn3) == LOW)
+    {
+      if (clicked11 == true)
+      {
+        clicked11 = false;
+      }
+    }
+    buttonRow = 4; 
+  }
+
+  //~~~~~~~~~~~~~~4~~~~~~~~~~~~~~~
+  if (buttonRow == 4)
+  {
+    digitalWrite(buttonOut3, HIGH);
+    digitalWrite(buttonOut0, LOW);
+    digitalWrite(buttonOut1, LOW);
+    digitalWrite(buttonOut2, LOW);
+
+    if (digitalRead(buttonIn0) == HIGH)
+    {
+      if (clicked12 == false)
+      {
+        button = 13;
+        lights[3][0] = !lights[3][0];
+        clicked12 = true;
+      }
+    }
+    else if (digitalRead(buttonIn0) == LOW)
+    {
+      if (clicked12 == true)
+      {
+        clicked12 = false;
+      }
+    }
+
+    //~~~~
+
+    if (digitalRead(buttonIn1) == HIGH)
+    {
+      if (clicked13 == false)
+      {
+        button = 14;
+        lights[3][1] = !lights[3][1];
+        clicked13 = true;
+      }
+    }
+    else if (digitalRead(buttonIn1) == LOW)
+    {
+      if (clicked13 == true)
+      {
+        clicked13 = false;
+      }
+    }
+
+    //~~~
+
+    if (digitalRead(buttonIn2) == HIGH)
+    {
+      if (clicked14 == false)
+      {
+        button = 15;
+        lights[3][2] = !lights[3][2];
+        clicked14 = true;
+      }
+    }
+    else if (digitalRead(buttonIn2) == LOW)
+    {
+      if (clicked14 == true)
+      {
+        clicked14 = false;
+      }
+    }
+
+    //~~~
+
+    if (digitalRead(buttonIn3) == HIGH)
+    {
+      if (clicked15 == false)
+      {
+        button = 16;
+        lights[3][3] = !lights[3][3];
+        clicked15 = true;
+      }
+    }
+    else if (digitalRead(buttonIn3) == LOW)
+    {
+      if (clicked15 == true)
+      {
+        clicked15 = false;
+      }
+    }
+    buttonRow = 1; 
   }
   Serial.println(button);
 }
@@ -256,3 +474,5 @@ void refreshLEDs()
     digitalWrite(row[thisRow], LOW);
   }
 }
+
+
