@@ -13,13 +13,13 @@ void setup()
   
   digitalWrite(24, LOW);
   digitalWrite(25, LOW);
-  digitalWrite(26, HIGH);
-  digitalWrite(27, HIGH);
+  digitalWrite(26, LOW);
+  digitalWrite(27, LOW);
   
-  lights[0][0] = LOW;
-  lights[0][1] = HIGH;
-  lights[1][0] = HIGH;
-  lights[1][1] = LOW;
+  lights[0][0] = HIGH;
+  lights[0][1] = LOW;
+  lights[1][0] = LOW;
+  lights[1][1] = HIGH;
 }
 
 void loop()
@@ -33,10 +33,35 @@ void loop()
       digitalWrite(col[thisCol], thisLight);
       if (thisLight == LOW)
       {
-        digitalWrite(col[thisCol], HIGH);
+        digitalWrite(col[thisCol], LOW);
       }
+        delay(1); //Accounts for transistor delays
     }
+    delay(8); //Accounts for transistor delays
     digitalWrite(row[thisRow], LOW);
   }
+
+//for (int i=0; i<2; i++)
+//{
+//  digitalWrite(24+i, HIGH);
+//  if (i == 0)
+//  {
+//  digitalWrite(26,HIGH);
+//  digitalWrite(27,LOW);
+//  }
+//  else
+//  {
+//   digitalWrite(26, LOW);
+//  digitalWrite(27, LOW); 
+//  }
+//  delay(1);
+//  digitalWrite(24+i,LOW);
+//  
+//}
+
+//digitalWrite(24, HIGH);
+//digitalWrite(25, LOW);
+//digitalWrite(26,LOW);
+//digitalWrite(27,HIGH);
 }
 

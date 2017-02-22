@@ -1,5 +1,3 @@
-//TODO: Debounce the buttons
-
 //LEDS
 const int row[2] = {24, 25};
 const int col[2] = {26, 27};
