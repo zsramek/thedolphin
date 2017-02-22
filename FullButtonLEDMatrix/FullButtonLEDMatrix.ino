@@ -44,6 +44,15 @@ int buttonOut1 = 45;
 int buttonOut2 = 46;
 int buttonOut3 = 47;
 
+//SEQUENCE
+boolean run = true;
+int count = 0;
+int maxCount = 3000;
+int currentStep = 0;
+int maxStep = 15;
+int currentRow = 0;
+int currentCol = 3;
+
 /////////////////////////
 
 void setup()
@@ -54,6 +63,7 @@ void setup()
 
 void loop()
 { 
+  runSeq();
   scanButtons();
   refreshLEDs();
 }
@@ -454,7 +464,7 @@ void scanButtons()
     }
     buttonRow = 1; 
   }
-  Serial.println(button);
+  //Serial.println(button);
 }
 
 void refreshLEDs()
@@ -472,6 +482,122 @@ void refreshLEDs()
       }
     }
     digitalWrite(row[thisRow], LOW);
+  }
+}
+
+void runSeq()
+{
+  if (run)
+  {
+    if (count >= maxCount)
+    {
+      count = 0;
+      //flip the old one back
+      lights[currentRow][currentCol] = !lights[currentRow][currentCol];
+      
+      if (currentStep < maxStep)
+      {
+        currentStep++;
+      }
+      else
+      {
+        currentStep = 0;
+      }
+      
+      Serial.println(currentStep);
+      //flip the new one
+      decodePin();
+      lights[currentRow][currentCol] = !lights[currentRow][currentCol];
+    }
+    else
+    {
+      count++;
+    }
+  
+  }
+}
+
+void decodePin()
+{
+  if (currentStep == 0)
+  {
+    currentRow = 0;
+    currentCol = 0;
+  }
+  else if (currentStep == 1)
+  {
+    currentRow = 0;
+    currentCol = 1;
+  }
+  else if (currentStep == 2)
+  {
+    currentRow = 0;
+    currentCol = 2;
+  }
+  else if (currentStep == 3)
+  {
+    currentRow = 0;
+    currentCol = 3;
+  }
+  else if (currentStep == 4)
+  {
+    currentRow = 1;
+    currentCol = 0;
+  }
+  else if (currentStep == 5)
+  {
+    currentRow = 1;
+    currentCol = 1;
+  }
+  else if (currentStep == 6)
+  {
+    currentRow = 1;
+    currentCol = 2;
+  }
+  else if (currentStep == 7)
+  {
+    currentRow = 1;
+    currentCol = 3;
+  }
+  else if (currentStep == 8)
+  {
+    currentRow = 2;
+    currentCol = 0;
+  }
+  else if (currentStep == 9)
+  {
+    currentRow = 2;
+    currentCol = 1;
+  }
+  else if (currentStep == 10)
+  {
+    currentRow = 2;
+    currentCol = 2;
+  }
+  else if (currentStep == 11)
+  {
+    currentRow = 2;
+    currentCol = 3;
+  }
+  else if (currentStep == 12)
+  {
+    currentRow = 3;
+    currentCol = 0;
+  }
+  else if (currentStep == 13)
+  {
+    currentRow = 3;
+    currentCol = 1;
+  }
+  else if (currentStep == 14)
+  {
+    currentRow = 3;
+    currentCol = 2;
+  }
+  else if (currentStep == 5)
+  {
+    currentRow = 3;
+    currentCol = 3;
   }
 }
 
