@@ -47,7 +47,7 @@ int buttonOut3 = 47;
 //SEQUENCE
 boolean run = true;
 int count = 0;
-int maxCount = 3000;
+int maxCount = 300;
 int currentStep = 0;
 int maxStep = 15;
 int currentRow = 0;
@@ -108,7 +108,7 @@ void ledSetup()
   lights[0][0] = HIGH;
   lights[0][1] = HIGH;
   lights[0][2] = HIGH;
-  lights[0][3] = HIGH;
+  lights[0][3] = LOW;
   //~~~~~~~~~~~~~~~~~~
   lights[1][0] = HIGH;
   lights[1][1] = HIGH;
@@ -522,82 +522,82 @@ void decodePin()
   if (currentStep == 0)
   {
     currentRow = 0;
-    currentCol = 0;
+    currentCol = 3;
   }
   else if (currentStep == 1)
   {
-    currentRow = 0;
-    currentCol = 1;
+    currentRow = 1;
+    currentCol = 3;
   }
   else if (currentStep == 2)
   {
-    currentRow = 0;
-    currentCol = 2;
+    currentRow = 2;
+    currentCol = 3;
   }
   else if (currentStep == 3)
   {
-    currentRow = 0;
+    currentRow = 3;
     currentCol = 3;
   }
   else if (currentStep == 4)
   {
-    currentRow = 1;
-    currentCol = 0;
+    currentRow = 0;
+    currentCol = 2;
   }
   else if (currentStep == 5)
   {
     currentRow = 1;
-    currentCol = 1;
+    currentCol = 2;
   }
   else if (currentStep == 6)
   {
-    currentRow = 1;
+    currentRow = 2;
     currentCol = 2;
   }
   else if (currentStep == 7)
   {
-    currentRow = 1;
-    currentCol = 3;
+    currentRow = 3;
+    currentCol = 2;
   }
   else if (currentStep == 8)
   {
-    currentRow = 2;
-    currentCol = 0;
+    currentRow = 0;
+    currentCol = 1;
   }
   else if (currentStep == 9)
   {
-    currentRow = 2;
+    currentRow = 1;
     currentCol = 1;
   }
   else if (currentStep == 10)
   {
     currentRow = 2;
-    currentCol = 2;
+    currentCol = 1;
   }
   else if (currentStep == 11)
-  {
-    currentRow = 2;
-    currentCol = 3;
-  }
-  else if (currentStep == 12)
-  {
-    currentRow = 3;
-    currentCol = 0;
-  }
-  else if (currentStep == 13)
   {
     currentRow = 3;
     currentCol = 1;
   }
+  else if (currentStep == 12)
+  {
+    currentRow = 0;
+    currentCol = 0;
+  }
+  else if (currentStep == 13)
+  {
+    currentRow = 1;
+    currentCol = 0;
+  }
   else if (currentStep == 14)
   {
-    currentRow = 3;
-    currentCol = 2;
+    currentRow = 2;
+    currentCol = 0;
   }
-  else if (currentStep == 5)
+  else if (currentStep == 15)
   {
     currentRow = 3;
-    currentCol = 3;
+    currentCol = 0;
   }
 }
 
