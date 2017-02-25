@@ -48,6 +48,7 @@ int buttonOut3 = 47;
 boolean run = true;
 int count = 0;
 int maxCount = 400;
+int trigCount = 20;
 int currentStep = 0;
 int maxStep = 15;
 int currentRow = 0;
@@ -55,6 +56,9 @@ int currentCol = 3;
 
 //TRIGGERING
 boolean steps[4][4];
+//temp
+int triggerOut = 8;
+//temp
 
 /////////////////////////
 
@@ -157,7 +161,7 @@ void scanButtons()
       if (clicked0 == false)
       {
         button = 1;
-        lights[0][0] = !lights[0][0];
+        steps[0][0] = !steps[0][0];
         clicked0 = true;
       }
     }
@@ -176,7 +180,7 @@ void scanButtons()
       if (clicked1 == false)
       {
         button = 2;
-        lights[0][1] = !lights[0][1];
+        steps[0][1] = !steps[0][1];
         clicked1 = true;
       }
     }
@@ -195,7 +199,7 @@ void scanButtons()
       if (clicked2 == false)
       {
         button = 3;
-        lights[0][2] = !lights[0][2];
+        steps[0][2] = !steps[0][2];
         clicked2 = true;
       }
     }
@@ -214,7 +218,7 @@ void scanButtons()
       if (clicked3 == false)
       {
         button = 4;
-        lights[0][3] = !lights[0][3];
+        steps[0][3] = !steps[0][3];
         clicked3 = true;
       }
     }
@@ -242,7 +246,7 @@ void scanButtons()
       if (clicked4 == false)
       {
         button = 5;
-        lights[1][0] = !lights[1][0];
+        steps[1][0] = !steps[1][0];
         clicked4 = true;
       }
     }
@@ -261,7 +265,7 @@ void scanButtons()
       if (clicked5 == false)
       {
         button = 6;
-        lights[1][1] = !lights[1][1];
+        steps[1][1] = !steps[1][1];
         clicked5 = true;
       }
     }
@@ -280,7 +284,7 @@ void scanButtons()
       if (clicked6 == false)
       {
         button = 7;
-        lights[1][2] = !lights[1][2];
+        steps[1][2] = !steps[1][2];
         clicked6 = true;
       }
     }
@@ -299,7 +303,7 @@ void scanButtons()
       if (clicked7 == false)
       {
         button = 8;
-        lights[1][3] = !lights[1][3];
+        steps[1][3] = !steps[1][3];
         clicked7 = true;
       }
     }
@@ -326,7 +330,7 @@ void scanButtons()
       if (clicked8 == false)
       {
         button = 9;
-        lights[2][0] = !lights[2][0];
+        steps[2][0] = !steps[2][0];
         clicked8 = true;
       }
     }
@@ -345,7 +349,7 @@ void scanButtons()
       if (clicked9 == false)
       {
         button = 10;
-        lights[2][1] = !lights[2][1];
+        steps[2][1] = !steps[2][1];
         clicked9 = true;
       }
     }
@@ -364,7 +368,7 @@ void scanButtons()
       if (clicked10 == false)
       {
         button = 11;
-        lights[2][2] = !lights[2][2];
+        steps[2][2] = !steps[2][2];
         clicked10 = true;
       }
     }
@@ -383,7 +387,7 @@ void scanButtons()
       if (clicked11 == false)
       {
         button = 12;
-        lights[2][3] = !lights[2][3];
+        steps[2][3] = !steps[2][3];
         clicked11 = true;
       }
     }
@@ -410,7 +414,7 @@ void scanButtons()
       if (clicked12 == false)
       {
         button = 13;
-        lights[3][0] = !lights[3][0];
+        steps[3][0] = !steps[3][0];
         clicked12 = true;
       }
     }
@@ -429,7 +433,7 @@ void scanButtons()
       if (clicked13 == false)
       {
         button = 14;
-        lights[3][1] = !lights[3][1];
+        steps[3][1] = !steps[3][1];
         clicked13 = true;
       }
     }
@@ -448,7 +452,7 @@ void scanButtons()
       if (clicked14 == false)
       {
         button = 15;
-        lights[3][2] = !lights[3][2];
+        steps[3][2] = !steps[3][2];
         clicked14 = true;
       }
     }
@@ -467,7 +471,7 @@ void scanButtons()
       if (clicked15 == false)
       {
         button = 16;
-        lights[3][3] = !lights[3][3];
+        steps[3][3] = !steps[3][3];
         clicked15 = true;
       }
     }
@@ -509,8 +513,8 @@ void runSeq()
     {
       count = 0;
       //flip the old one back
-      lights[currentRow][currentCol] = !lights[currentRow][currentCol];
-      
+      //lights[currentRow][currentCol] = !lights[currentRow][currentCol];
+      alignSteps();
       if (currentStep < maxStep)
       {
         currentStep++;
@@ -520,14 +524,35 @@ void runSeq()
         currentStep = 0;
       }
       
-      Serial.println(currentStep);
+      //Serial.println(currentStep);
       //flip the new one
       decodeStep();
-      lights[currentRow][currentCol] = !lights[currentRow][currentCol];
+      //lights[currentRow][currentCol] = !lights[currentRow][currentCol];
     }
     else
     {
       count++;
+      if (steps[currentRow][currentCol] == true)
+      {
+        //Triggers
+        if (count < trigCount)
+        {
+          digitalWrite(triggerOut, HIGH);
+        }
+        else
+        {
+          digitalWrite(triggerOut, LOW);
+        }
+        //LEDs
+        lights[currentRow][currentCol] = HIGH;
+      }
+      else
+      {
+        digitalWrite(triggerOut, LOW);
+        lights[currentRow][currentCol] = LOW;
+      }
+      //alignSteps();
+      //lights[currentRow][currentCol] = !lights[currentRow][currentCol];
     }
   
   }
