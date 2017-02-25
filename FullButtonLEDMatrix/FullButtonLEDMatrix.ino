@@ -47,11 +47,14 @@ int buttonOut3 = 47;
 //SEQUENCE
 boolean run = true;
 int count = 0;
-int maxCount = 300;
+int maxCount = 400;
 int currentStep = 0;
 int maxStep = 15;
 int currentRow = 0;
 int currentCol = 3;
+
+//TRIGGERING
+boolean steps[4][4];
 
 /////////////////////////
 
@@ -59,6 +62,7 @@ void setup()
 {
   buttonSetup();
   ledSetup();
+  seqSetup();
 }
 
 void loop()
@@ -124,6 +128,18 @@ void ledSetup()
   lights[3][1] = HIGH;
   lights[3][2] = HIGH;
   lights[3][3] = HIGH;
+}
+
+void seqSetup()
+{
+  //For now just reset the steps on powerup
+  for (int i = 0; i < 4; i++)
+  {
+    for (int j = 0; j < 4; j++)
+    {
+      steps[i][j] = false;
+    }
+  }
 }
 
 void scanButtons()
@@ -506,7 +522,7 @@ void runSeq()
       
       Serial.println(currentStep);
       //flip the new one
-      decodePin();
+      decodeStep();
       lights[currentRow][currentCol] = !lights[currentRow][currentCol];
     }
     else
@@ -517,7 +533,10 @@ void runSeq()
   }
 }
 
-void decodePin()
+//////////////////////SUBROUTINES////////////////////
+
+//This subroutine looks at the current step and sets the column and row correctly
+void decodeStep()
 {
   if (currentStep == 0)
   {
@@ -598,6 +617,25 @@ void decodePin()
   {
     currentRow = 3;
     currentCol = 0;
+  }
+}
+
+//This subroutine iterates through the step and led matrices and aligns them
+void alignSteps()
+{
+  for (int i = 0; i < 4; i++)
+  {
+    for (int j = 0; j < 4; j++)
+    {
+      if (steps[i][j] == true)
+      {
+        lights[i][j] = LOW;
+      }
+      else
+      {
+        lights[i][j] = HIGH;
+      }
+    }
   }
 }
 
