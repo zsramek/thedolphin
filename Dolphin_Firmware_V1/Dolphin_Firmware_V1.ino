@@ -55,23 +55,25 @@ int currentRow = 0;
 int currentCol = 3;
 
 //TRIGGERING
-boolean stepsC0[4][4];
-boolean stepsC1[4][4];
-boolean stepsC2[4][4];
-boolean stepsC3[4][4];
-boolean stepsC4[4][4];
-boolean stepsC5[4][4];
-boolean stepsC6[4][4];
-boolean stepsC7[4][4];
-boolean stepsC8[4][4];
-boolean stepsC9[4][4];
-boolean stepsC10[4][4];
-boolean stepsC11[4][4];
-boolean stepsC12[4][4];
-boolean stepsC13[4][4];
-boolean stepsC14[4][4];
-boolean stepsC15[4][4];
+boolean steps[4][4];
+boolean steps0[4][4];
+boolean steps1[4][4];
+boolean steps2[4][4];
+boolean steps3[4][4];
+boolean steps4[4][4];
+boolean steps5[4][4];
+boolean steps6[4][4];
+boolean steps7[4][4];
+boolean steps8[4][4];
+boolean steps9[4][4];
+boolean steps10[4][4];
+boolean steps11[4][4];
+boolean steps12[4][4];
+boolean steps13[4][4];
+boolean steps14[4][4];
+boolean steps15[4][4];
 
+//Trigger Output Pins
 int triggerOut0 = 38;
 int triggerOut1 = 39;
 int triggerOut2 = 40;
@@ -99,6 +101,7 @@ void setup()
 {
   buttonSetup();
   ledSetup();
+  triggerSetup();
   seqSetup();
 }
 
@@ -167,6 +170,26 @@ void ledSetup()
   lights[3][3] = HIGH;
 }
 
+void triggerSetup()
+{
+  pinMode(triggerOut0, OUTPUT);
+  pinMode(triggerOut1, OUTPUT);
+  pinMode(triggerOut2, OUTPUT);
+  pinMode(triggerOut3, OUTPUT);
+  pinMode(triggerOut4, OUTPUT);
+  pinMode(triggerOut5, OUTPUT);
+  pinMode(triggerOut6, OUTPUT);
+  pinMode(triggerOut7, OUTPUT);
+  pinMode(triggerOut8, OUTPUT);
+  pinMode(triggerOut9, OUTPUT);
+  pinMode(triggerOut10, OUTPUT);
+  pinMode(triggerOut11, OUTPUT);
+  pinMode(triggerOut12, OUTPUT);
+  pinMode(triggerOut13, OUTPUT);
+  pinMode(triggerOut14, OUTPUT);
+  pinMode(triggerOut15, OUTPUT);
+}
+
 void seqSetup()
 {
   //For now just reset the steps on powerup
@@ -175,6 +198,22 @@ void seqSetup()
     for (int j = 0; j < 4; j++)
     {
       steps[i][j] = false;
+      steps0[i][j] = false;
+      steps1[i][j] = false;
+      steps2[i][j] = false;
+      steps3[i][j] = false;
+      steps4[i][j] = false;
+      steps5[i][j] = false;
+      steps6[i][j] = false;
+      steps7[i][j] = false;
+      steps8[i][j] = false;
+      steps9[i][j] = false;
+      steps10[i][j] = false;
+      steps11[i][j] = false;
+      steps12[i][j] = false;
+      steps13[i][j] = false;
+      steps14[i][j] = false;
+      steps15[i][j] = false;
     }
   }
 }
