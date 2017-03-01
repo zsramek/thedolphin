@@ -5,14 +5,14 @@ const int col[4] = {
   28, 29, 30, 31};
 boolean lights[4][4];
 
-int ledRow0 = 24;
-int ledRow1 = 25;
-int ledRow2 = 26;
-int ledRow3 = 27;
-int ledCol0 = 28;
-int ledCol1 = 29;
-int ledCol2 = 30;
-int ledCol3 = 31;
+int ledRow0 = 22;
+int ledRow1 = 23;
+int ledRow2 = 24;
+int ledRow3 = 25;
+int ledCol0 = 26;
+int ledCol1 = 27;
+int ledCol2 = 28;
+int ledCol3 = 29;
 
 //BUTTONS
 int buttonRow = 1;
@@ -35,14 +35,14 @@ boolean clicked13 = false;
 boolean clicked14 = false;
 boolean clicked15 = false;
 
-int buttonIn0 = 40;
-int buttonIn1 = 41;
-int buttonIn2 = 42;
-int buttonIn3 = 43;
-int buttonOut0 = 44;
-int buttonOut1 = 45;
-int buttonOut2 = 46;
-int buttonOut3 = 47;
+int buttonIn0 = 30;
+int buttonIn1 = 31;
+int buttonIn2 = 32;
+int buttonIn3 = 33;
+int buttonOut0 = 34;
+int buttonOut1 = 35;
+int buttonOut2 = 36;
+int buttonOut3 = 37;
 
 //SEQUENCE
 boolean run = true;
@@ -55,7 +55,40 @@ int currentRow = 0;
 int currentCol = 3;
 
 //TRIGGERING
-boolean steps[4][4];
+boolean stepsC0[4][4];
+boolean stepsC1[4][4];
+boolean stepsC2[4][4];
+boolean stepsC3[4][4];
+boolean stepsC4[4][4];
+boolean stepsC5[4][4];
+boolean stepsC6[4][4];
+boolean stepsC7[4][4];
+boolean stepsC8[4][4];
+boolean stepsC9[4][4];
+boolean stepsC10[4][4];
+boolean stepsC11[4][4];
+boolean stepsC12[4][4];
+boolean stepsC13[4][4];
+boolean stepsC14[4][4];
+boolean stepsC15[4][4];
+
+int triggerOut0 = 38;
+int triggerOut1 = 39;
+int triggerOut2 = 40;
+int triggerOut3 = 41;
+int triggerOut4 = 42;
+int triggerOut5 = 43;
+int triggerOut6 = 44;
+int triggerOut7 = 45;
+int triggerOut8 = 46;
+int triggerOut9 = 47;
+int triggerOut10 = 48;
+int triggerOut11 = 49;
+int triggerOut12 = 50;
+int triggerOut13 = 51;
+int triggerOut14 = 52;
+int triggerOut15 = 53;
+
 //temp
 int triggerOut = 8;
 //temp
