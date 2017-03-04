@@ -74,6 +74,10 @@ int maxStep = 15;
 int currentRow = 0;
 int currentCol = 3;
 
+//CHANNEL SELECT
+int channel = 0;
+int bank = 0;
+
 //TRIGGERING
 boolean steps[4][4];
 boolean steps0[4][4];
@@ -119,7 +123,7 @@ int triggerOut = 8;
 
 void setup()
 {
-  
+  rotarySetup();
   buttonSetup();
   ledSetup();
   triggerSetup();
@@ -131,9 +135,26 @@ void loop()
   runSeq();
   scanButtons();
   refreshLEDs();
+  updateChannelData();
+  scanRotary();
 }
 
 ////////////////////////
+
+void rotarySetup()
+{
+  //Rotary Switch
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
+  pinMode(A4, INPUT);
+  pinMode(A5, INPUT);
+  pinMode(A6, INPUT);
+  pinMode(A7, INPUT);
+  //Flip Switch
+  pinMode(A8, INPUT);
+}
 
 void buttonSetup()
 {
@@ -193,22 +214,22 @@ void ledSetup()
 
 void triggerSetup()
 {
-//  pinMode(triggerOut0, OUTPUT);
-//  pinMode(triggerOut1, OUTPUT);
-//  pinMode(triggerOut2, OUTPUT);
-//  pinMode(triggerOut3, OUTPUT);
-//  pinMode(triggerOut4, OUTPUT);
-//  pinMode(triggerOut5, OUTPUT);
-//  pinMode(triggerOut6, OUTPUT);
-//  pinMode(triggerOut7, OUTPUT);
-//  pinMode(triggerOut8, OUTPUT);
-//  pinMode(triggerOut9, OUTPUT);
-//  pinMode(triggerOut10, OUTPUT);
-//  pinMode(triggerOut11, OUTPUT);
-//  pinMode(triggerOut12, OUTPUT);
-//  pinMode(triggerOut13, OUTPUT);
-//  pinMode(triggerOut14, OUTPUT);
-//  pinMode(triggerOut15, OUTPUT);
+  //  pinMode(triggerOut0, OUTPUT);
+  //  pinMode(triggerOut1, OUTPUT);
+  //  pinMode(triggerOut2, OUTPUT);
+  //  pinMode(triggerOut3, OUTPUT);
+  //  pinMode(triggerOut4, OUTPUT);
+  //  pinMode(triggerOut5, OUTPUT);
+  //  pinMode(triggerOut6, OUTPUT);
+  //  pinMode(triggerOut7, OUTPUT);
+  //  pinMode(triggerOut8, OUTPUT);
+  //  pinMode(triggerOut9, OUTPUT);
+  //  pinMode(triggerOut10, OUTPUT);
+  //  pinMode(triggerOut11, OUTPUT);
+  //  pinMode(triggerOut12, OUTPUT);
+  //  pinMode(triggerOut13, OUTPUT);
+  //  pinMode(triggerOut14, OUTPUT);
+  //  pinMode(triggerOut15, OUTPUT);
 }
 
 void seqSetup()
@@ -578,6 +599,106 @@ void scanButtons()
     buttonRow = 1; 
   }
   //Serial.println(button);
+  //updateChannelData();
+}
+
+void scanRotary()
+{
+  if (digitalRead(A8) == LOW)
+  {
+    bank = 0;
+  }
+  else if (digitalRead(A8) == HIGH)
+  {
+    bank = 1;
+  }
+  
+  if (bank == 0)
+  {
+    if (digitalRead(A0) == HIGH)
+    {
+      channel = 0;
+      memcpy(steps, steps0, sizeof steps0);
+    }
+    else if (digitalRead(A1) == HIGH)
+    {
+      channel = 1;
+      memcpy(steps, steps1, sizeof steps1);
+    }
+    else if (digitalRead(A2) == HIGH)
+    {
+      channel = 2;
+      memcpy(steps, steps2, sizeof steps2);
+    }
+    else if (digitalRead(A3) == HIGH)
+    {
+      channel = 3;
+      memcpy(steps, steps3, sizeof steps3);
+    }
+    else if (digitalRead(A4) == HIGH)
+    {
+      channel = 4;
+      memcpy(steps, steps4, sizeof steps4);
+    }
+    else if (digitalRead(A5) == HIGH)
+    {
+      channel = 5;
+      memcpy(steps, steps5, sizeof steps5);
+    }
+    else if (digitalRead(A6) == HIGH)
+    {
+      channel = 6;
+      memcpy(steps, steps6, sizeof steps6);
+    }
+    else if (digitalRead(A7) == HIGH)
+    {
+      channel = 7;
+      memcpy(steps, steps7, sizeof steps7);
+    }
+  }
+  else if (bank == 1)
+  {
+    if (digitalRead(A0) == HIGH)
+    {
+      channel = 8;
+      memcpy(steps, steps8, sizeof steps8);
+    }
+    else if (digitalRead(A1) == HIGH)
+    {
+      channel = 9;
+      memcpy(steps, steps9, sizeof steps9);
+    }
+    else if (digitalRead(A2) == HIGH)
+    {
+      channel = 10;
+      memcpy(steps, steps10, sizeof steps10);
+    }
+    else if (digitalRead(A3) == HIGH)
+    {
+      channel = 11;
+      memcpy(steps, steps11, sizeof steps11);
+    }
+    else if (digitalRead(A4) == HIGH)
+    {
+      channel = 12;
+      memcpy(steps, steps12, sizeof steps12);
+    }
+    else if (digitalRead(A5) == HIGH)
+    {
+      channel = 13;
+      memcpy(steps, steps13, sizeof steps13);
+    }
+    else if (digitalRead(A6) == HIGH)
+    {
+      channel = 14;
+      memcpy(steps, steps14, sizeof steps14);
+    }
+    else if (digitalRead(A7) == HIGH)
+    {
+      channel = 15;
+      memcpy(steps, steps15, sizeof steps15);
+    }
+  }
 }
 
 void refreshLEDs()
@@ -616,7 +737,7 @@ void runSeq()
       {
         currentStep = 0;
       }
-      
+
       //Serial.println(currentStep);
       //flip the new one
       decodeStep();
@@ -647,7 +768,7 @@ void runSeq()
       //alignSteps();
       //lights[currentRow][currentCol] = !lights[currentRow][currentCol];
     }
-  
+
   }
 }
 
@@ -756,5 +877,75 @@ void alignSteps()
     }
   }
 }
+
+//This subroutine updates the correct matrix with the current step data
+void updateChannelData()
+{
+  if (channel == 0)
+  {
+    memcpy(steps0, steps, sizeof steps);
+  }
+  else if (channel == 1)
+  {
+    memcpy(steps1, steps, sizeof steps);
+  }
+  else if (channel == 2)
+  {
+    memcpy(steps2, steps, sizeof steps);
+  }
+  else if (channel == 3)
+  {
+    memcpy(steps3, steps, sizeof steps);
+  }
+  else if (channel == 4)
+  {
+    memcpy(steps4, steps, sizeof steps);
+  }
+  else if (channel == 5)
+  {
+    memcpy(steps5, steps, sizeof steps);
+  }
+  else if (channel == 6)
+  {
+    memcpy(steps6, steps, sizeof steps);
+  }
+  else if (channel == 7)
+  {
+    memcpy(steps7, steps, sizeof steps);
+  }
+  else if (channel == 8)
+  {
+    memcpy(steps8, steps, sizeof steps);
+  }
+  else if (channel == 9)
+  {
+    memcpy(steps9, steps, sizeof steps);
+  }
+  else if (channel == 10)
+  {
+    memcpy(steps10, steps, sizeof steps);
+  }
+  else if (channel == 11)
+  {
+    memcpy(steps11, steps, sizeof steps);
+  }
+  else if (channel == 12)
+  {
+    memcpy(steps12, steps, sizeof steps);
+  }
+  else if (channel == 13)
+  {
+    memcpy(steps13, steps, sizeof steps);
+  }
+  else if (channel == 14)
+  {
+    memcpy(steps14, steps, sizeof steps);
+  }
+  else if (channel == 15)
+  {
+    memcpy(steps15, steps, sizeof steps);
+  }
+}
+
 
 
