@@ -260,6 +260,7 @@ void seqSetup()
   }
 }
 
+//BUTTONS
 void scanButtons()
 {
   //~~~~~~~~~~~~~~1~~~~~~~~~~~~~~~
@@ -598,10 +599,9 @@ void scanButtons()
     }
     buttonRow = 1; 
   }
-  //Serial.println(button);
-  //updateChannelData();
 }
 
+//CHANNEL SELECT
 void scanRotary()
 {
   if (digitalRead(A8) == LOW)
@@ -701,6 +701,75 @@ void scanRotary()
   }
 }
 
+void updateChannelData()
+{
+  if (channel == 0)
+  {
+    memcpy(steps0, steps, sizeof steps);
+  }
+  else if (channel == 1)
+  {
+    memcpy(steps1, steps, sizeof steps);
+  }
+  else if (channel == 2)
+  {
+    memcpy(steps2, steps, sizeof steps);
+  }
+  else if (channel == 3)
+  {
+    memcpy(steps3, steps, sizeof steps);
+  }
+  else if (channel == 4)
+  {
+    memcpy(steps4, steps, sizeof steps);
+  }
+  else if (channel == 5)
+  {
+    memcpy(steps5, steps, sizeof steps);
+  }
+  else if (channel == 6)
+  {
+    memcpy(steps6, steps, sizeof steps);
+  }
+  else if (channel == 7)
+  {
+    memcpy(steps7, steps, sizeof steps);
+  }
+  else if (channel == 8)
+  {
+    memcpy(steps8, steps, sizeof steps);
+  }
+  else if (channel == 9)
+  {
+    memcpy(steps9, steps, sizeof steps);
+  }
+  else if (channel == 10)
+  {
+    memcpy(steps10, steps, sizeof steps);
+  }
+  else if (channel == 11)
+  {
+    memcpy(steps11, steps, sizeof steps);
+  }
+  else if (channel == 12)
+  {
+    memcpy(steps12, steps, sizeof steps);
+  }
+  else if (channel == 13)
+  {
+    memcpy(steps13, steps, sizeof steps);
+  }
+  else if (channel == 14)
+  {
+    memcpy(steps14, steps, sizeof steps);
+  }
+  else if (channel == 15)
+  {
+    memcpy(steps15, steps, sizeof steps);
+  }
+}
+
+//LEDs
 void refreshLEDs()
 {
   for (int thisRow = 0; thisRow < 4; thisRow++)
@@ -719,6 +788,7 @@ void refreshLEDs()
   }
 }
 
+//SEQUENCER
 void runSeq()
 {
   if (run)
@@ -726,8 +796,6 @@ void runSeq()
     if (count >= maxCount)
     {
       count = 0;
-      //flip the old one back
-      //lights[currentRow][currentCol] = !lights[currentRow][currentCol];
       alignSteps();
       if (currentStep < maxStep)
       {
@@ -737,11 +805,7 @@ void runSeq()
       {
         currentStep = 0;
       }
-
-      //Serial.println(currentStep);
-      //flip the new one
       decodeStep();
-      //lights[currentRow][currentCol] = !lights[currentRow][currentCol];
     }
     else
     {
@@ -765,8 +829,6 @@ void runSeq()
         digitalWrite(triggerOut, LOW);
         lights[currentRow][currentCol] = LOW;
       }
-      //alignSteps();
-      //lights[currentRow][currentCol] = !lights[currentRow][currentCol];
     }
 
   }
@@ -877,75 +939,3 @@ void alignSteps()
     }
   }
 }
-
-//This subroutine updates the correct matrix with the current step data
-void updateChannelData()
-{
-  if (channel == 0)
-  {
-    memcpy(steps0, steps, sizeof steps);
-  }
-  else if (channel == 1)
-  {
-    memcpy(steps1, steps, sizeof steps);
-  }
-  else if (channel == 2)
-  {
-    memcpy(steps2, steps, sizeof steps);
-  }
-  else if (channel == 3)
-  {
-    memcpy(steps3, steps, sizeof steps);
-  }
-  else if (channel == 4)
-  {
-    memcpy(steps4, steps, sizeof steps);
-  }
-  else if (channel == 5)
-  {
-    memcpy(steps5, steps, sizeof steps);
-  }
-  else if (channel == 6)
-  {
-    memcpy(steps6, steps, sizeof steps);
-  }
-  else if (channel == 7)
-  {
-    memcpy(steps7, steps, sizeof steps);
-  }
-  else if (channel == 8)
-  {
-    memcpy(steps8, steps, sizeof steps);
-  }
-  else if (channel == 9)
-  {
-    memcpy(steps9, steps, sizeof steps);
-  }
-  else if (channel == 10)
-  {
-    memcpy(steps10, steps, sizeof steps);
-  }
-  else if (channel == 11)
-  {
-    memcpy(steps11, steps, sizeof steps);
-  }
-  else if (channel == 12)
-  {
-    memcpy(steps12, steps, sizeof steps);
-  }
-  else if (channel == 13)
-  {
-    memcpy(steps13, steps, sizeof steps);
-  }
-  else if (channel == 14)
-  {
-    memcpy(steps14, steps, sizeof steps);
-  }
-  else if (channel == 15)
-  {
-    memcpy(steps15, steps, sizeof steps);
-  }
-}
-
-
-
