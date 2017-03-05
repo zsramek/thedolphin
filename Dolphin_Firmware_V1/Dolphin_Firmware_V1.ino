@@ -1,3 +1,9 @@
+//TODO
+//Triggering code for all channels
+//Live-play scanning and triggering
+//I2C interfacing
+//Tempo
+
 //LEDS
 const int row[4] = {
   24, 25, 26, 27};
