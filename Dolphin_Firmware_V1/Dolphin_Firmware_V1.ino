@@ -3,6 +3,7 @@
 //Live-play scanning and triggering
 //I2C interfacing
 //Tempo
+//Start/Stop Button
 
 //LEDS
 const int row[4] = {
