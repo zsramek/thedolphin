@@ -1,18 +1,28 @@
 //LEDS
-const int row[4] = {
-  24, 25, 26, 27};
-const int col[4] = {
-  28, 29, 30, 31};
-boolean lights[4][4];
 
-int ledRow0 = 24;
-int ledRow1 = 25;
-int ledRow2 = 26;
-int ledRow3 = 27;
-int ledCol0 = 28;
-int ledCol1 = 29;
-int ledCol2 = 30;
-int ledCol3 = 31;
+int ledRow0 = 22;
+int ledRow1 = 23;
+int ledRow2 = 24;
+int ledRow3 = 25;
+int ledCol0 = 26;
+int ledCol1 = 27;
+int ledCol2 = 28;
+int ledCol3 = 29;
+
+//int ledRow0 = 22;
+//int ledRow1 = 23;
+//int ledRow2 = 24;
+//int ledRow3 = 25;
+//int ledCol0 = 26;
+//int ledCol1 = 27;
+//int ledCol2 = 28;
+//int ledCol3 = 29;
+
+const int row[4] = {
+  ledRow0, ledRow1, ledRow2, ledRow3};
+const int col[4] = {
+  ledCol0, ledCol1, ledCol2, ledCol3};
+boolean lights[4][4];
 
 //BUTTONS
 int buttonRow = 1;
@@ -35,14 +45,23 @@ boolean clicked13 = false;
 boolean clicked14 = false;
 boolean clicked15 = false;
 
-int buttonIn0 = 40;
-int buttonIn1 = 41;
-int buttonIn2 = 42;
-int buttonIn3 = 43;
-int buttonOut0 = 44;
-int buttonOut1 = 45;
-int buttonOut2 = 46;
-int buttonOut3 = 47;
+//int buttonIn0 = 40;
+//int buttonIn1 = 41;
+//int buttonIn2 = 42;
+//int buttonIn3 = 43;
+//int buttonOut0 = 44;
+//int buttonOut1 = 45;
+//int buttonOut2 = 46;
+//int buttonOut3 = 47;
+
+int buttonIn0 = 30;
+int buttonIn1 = 31;
+int buttonIn2 = 32;
+int buttonIn3 = 33;
+int buttonOut0 = 34;
+int buttonOut1 = 35;
+int buttonOut2 = 36;
+int buttonOut3 = 37;
 
 //SEQUENCE
 boolean run = true;

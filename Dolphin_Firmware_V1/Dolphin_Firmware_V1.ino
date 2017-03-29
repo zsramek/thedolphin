@@ -6,30 +6,30 @@
 //Start/Stop Button
 
 //LEDS
+int ledRow0 = 22;
+int ledRow1 = 23;
+int ledRow2 = 24;
+int ledRow3 = 25;
+int ledCol0 = 26;
+int ledCol1 = 27;
+int ledCol2 = 28;
+int ledCol3 = 29;
+
 const int row[4] = {
-  24, 25, 26, 27};
+  ledRow0, ledRow1, ledRow2, ledRow3};
 const int col[4] = {
-  28, 29, 30, 31};
+  ledCol0, ledCol1, ledCol2, ledCol3};
 boolean lights[4][4];
 
-//int ledRow0 = 22;
-//int ledRow1 = 23;
-//int ledRow2 = 24;
-//int ledRow3 = 25;
-//int ledCol0 = 26;
-//int ledCol1 = 27;
-//int ledCol2 = 28;
-//int ledCol3 = 29;
-
 //Until we get a new arduino
-int ledRow0 = 24;
-int ledRow1 = 25;
-int ledRow2 = 26;
-int ledRow3 = 27;
-int ledCol0 = 28;
-int ledCol1 = 29;
-int ledCol2 = 30;
-int ledCol3 = 31;
+//int ledRow0 = 24;
+//int ledRow1 = 25;
+//int ledRow2 = 26;
+//int ledRow3 = 27;
+//int ledCol0 = 28;
+//int ledCol1 = 29;
+//int ledCol2 = 30;
+//int ledCol3 = 31;
 
 //BUTTONS
 int buttonRow = 1;
@@ -52,24 +52,24 @@ boolean clicked13 = false;
 boolean clicked14 = false;
 boolean clicked15 = false;
 
-//int buttonIn0 = 30;
-//int buttonIn1 = 31;
-//int buttonIn2 = 32;
-//int buttonIn3 = 33;
-//int buttonOut0 = 34;
-//int buttonOut1 = 35;
-//int buttonOut2 = 36;
-//int buttonOut3 = 37;
+int buttonIn0 = 30;
+int buttonIn1 = 31;
+int buttonIn2 = 32;
+int buttonIn3 = 33;
+int buttonOut0 = 34;
+int buttonOut1 = 35;
+int buttonOut2 = 36;
+int buttonOut3 = 37;
 
 //Until we get a new arduino
-int buttonIn0 = 32;
-int buttonIn1 = 33;
-int buttonIn2 = 34;
-int buttonIn3 = 35;
-int buttonOut0 = 36;
-int buttonOut1 = 37;
-int buttonOut2 = 38;
-int buttonOut3 = 39;
+//int buttonIn0 = 32;
+//int buttonIn1 = 33;
+//int buttonIn2 = 34;
+//int buttonIn3 = 35;
+//int buttonOut0 = 36;
+//int buttonOut1 = 37;
+//int buttonOut2 = 38;
+//int buttonOut3 = 39;
 
 //SEQUENCE
 boolean run = true;
@@ -105,25 +105,25 @@ boolean steps14[4][4];
 boolean steps15[4][4];
 
 //Trigger Output Pins
-//int triggerOut0 = 38;
-//int triggerOut1 = 39;
-//int triggerOut2 = 40;
-//int triggerOut3 = 41;
-//int triggerOut4 = 42;
-//int triggerOut5 = 43;
-//int triggerOut6 = 44;
-//int triggerOut7 = 45;
-//int triggerOut8 = 46;
-//int triggerOut9 = 47;
-//int triggerOut10 = 48;
-//int triggerOut11 = 49;
-//int triggerOut12 = 50;
-//int triggerOut13 = 51;
-//int triggerOut14 = 52;
-//int triggerOut15 = 53;
+int triggerOut0 = 38;
+int triggerOut1 = 39;
+int triggerOut2 = 40;
+int triggerOut3 = 41;
+int triggerOut4 = 42;
+int triggerOut5 = 43;
+int triggerOut6 = 44;
+int triggerOut7 = 45;
+int triggerOut8 = 46;
+int triggerOut9 = 47;
+int triggerOut10 = 48;
+int triggerOut11 = 49;
+int triggerOut12 = 50;
+int triggerOut13 = 51;
+int triggerOut14 = 52;
+int triggerOut15 = 53;
 
 //temp
-int triggerOut = 8;
+int triggerOut = 38;
 //temp
 
 /////////////////////////
@@ -221,22 +221,22 @@ void ledSetup()
 
 void triggerSetup()
 {
-  //  pinMode(triggerOut0, OUTPUT);
-  //  pinMode(triggerOut1, OUTPUT);
-  //  pinMode(triggerOut2, OUTPUT);
-  //  pinMode(triggerOut3, OUTPUT);
-  //  pinMode(triggerOut4, OUTPUT);
-  //  pinMode(triggerOut5, OUTPUT);
-  //  pinMode(triggerOut6, OUTPUT);
-  //  pinMode(triggerOut7, OUTPUT);
-  //  pinMode(triggerOut8, OUTPUT);
-  //  pinMode(triggerOut9, OUTPUT);
-  //  pinMode(triggerOut10, OUTPUT);
-  //  pinMode(triggerOut11, OUTPUT);
-  //  pinMode(triggerOut12, OUTPUT);
-  //  pinMode(triggerOut13, OUTPUT);
-  //  pinMode(triggerOut14, OUTPUT);
-  //  pinMode(triggerOut15, OUTPUT);
+    pinMode(triggerOut0, OUTPUT);
+    pinMode(triggerOut1, OUTPUT);
+    pinMode(triggerOut2, OUTPUT);
+    pinMode(triggerOut3, OUTPUT);
+    pinMode(triggerOut4, OUTPUT);
+    pinMode(triggerOut5, OUTPUT);
+    pinMode(triggerOut6, OUTPUT);
+    pinMode(triggerOut7, OUTPUT);
+    pinMode(triggerOut8, OUTPUT);
+    pinMode(triggerOut9, OUTPUT);
+    pinMode(triggerOut10, OUTPUT);
+    pinMode(triggerOut11, OUTPUT);
+    pinMode(triggerOut12, OUTPUT);
+    pinMode(triggerOut13, OUTPUT);
+    pinMode(triggerOut14, OUTPUT);
+    pinMode(triggerOut15, OUTPUT);
 }
 
 void seqSetup()
