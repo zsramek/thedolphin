@@ -21,15 +21,6 @@ const int col[4] = {
   ledCol0, ledCol1, ledCol2, ledCol3};
 boolean lights[4][4];
 
-//Until we get a new arduino
-//int ledRow0 = 24;
-//int ledRow1 = 25;
-//int ledRow2 = 26;
-//int ledRow3 = 27;
-//int ledCol0 = 28;
-//int ledCol1 = 29;
-//int ledCol2 = 30;
-//int ledCol3 = 31;
 
 //BUTTONS
 int buttonRow = 1;
@@ -60,16 +51,6 @@ int buttonOut0 = 34;
 int buttonOut1 = 35;
 int buttonOut2 = 36;
 int buttonOut3 = 37;
-
-//Until we get a new arduino
-//int buttonIn0 = 32;
-//int buttonIn1 = 33;
-//int buttonIn2 = 34;
-//int buttonIn3 = 35;
-//int buttonOut0 = 36;
-//int buttonOut1 = 37;
-//int buttonOut2 = 38;
-//int buttonOut3 = 39;
 
 //SEQUENCE
 boolean run = true;
@@ -221,22 +202,22 @@ void ledSetup()
 
 void triggerSetup()
 {
-    pinMode(triggerOut0, OUTPUT);
-    pinMode(triggerOut1, OUTPUT);
-    pinMode(triggerOut2, OUTPUT);
-    pinMode(triggerOut3, OUTPUT);
-    pinMode(triggerOut4, OUTPUT);
-    pinMode(triggerOut5, OUTPUT);
-    pinMode(triggerOut6, OUTPUT);
-    pinMode(triggerOut7, OUTPUT);
-    pinMode(triggerOut8, OUTPUT);
-    pinMode(triggerOut9, OUTPUT);
-    pinMode(triggerOut10, OUTPUT);
-    pinMode(triggerOut11, OUTPUT);
-    pinMode(triggerOut12, OUTPUT);
-    pinMode(triggerOut13, OUTPUT);
-    pinMode(triggerOut14, OUTPUT);
-    pinMode(triggerOut15, OUTPUT);
+  pinMode(triggerOut0, OUTPUT);
+  pinMode(triggerOut1, OUTPUT);
+  pinMode(triggerOut2, OUTPUT);
+  pinMode(triggerOut3, OUTPUT);
+  pinMode(triggerOut4, OUTPUT);
+  pinMode(triggerOut5, OUTPUT);
+  pinMode(triggerOut6, OUTPUT);
+  pinMode(triggerOut7, OUTPUT);
+  pinMode(triggerOut8, OUTPUT);
+  pinMode(triggerOut9, OUTPUT);
+  pinMode(triggerOut10, OUTPUT);
+  pinMode(triggerOut11, OUTPUT);
+  pinMode(triggerOut12, OUTPUT);
+  pinMode(triggerOut13, OUTPUT);
+  pinMode(triggerOut14, OUTPUT);
+  pinMode(triggerOut15, OUTPUT);
 }
 
 void seqSetup()
@@ -619,7 +600,7 @@ void scanRotary()
   {
     bank = 1;
   }
-  
+
   if (bank == 0)
   {
     if (digitalRead(A0) == HIGH)
@@ -819,23 +800,14 @@ void runSeq()
       count++;
       if (steps[currentRow][currentCol] == true)
       {
-        //Triggers
-        if (count < trigCount)
-        {
-          digitalWrite(triggerOut, HIGH);
-        }
-        else
-        {
-          digitalWrite(triggerOut, LOW);
-        }
         //LEDs
         lights[currentRow][currentCol] = HIGH;
       }
       else
       {
-        digitalWrite(triggerOut, LOW);
         lights[currentRow][currentCol] = LOW;
       }
+      sendTriggers();
     }
 
   }
@@ -946,3 +918,297 @@ void alignSteps()
     }
   }
 }
+
+//This subroutine checks for and sends the correct trigger signals
+void sendTriggers()
+{
+  //Step 0
+  if (steps0[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut0, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut0, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut0, LOW);
+  }
+
+  //Step 1
+  if (steps1[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut1, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut1, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut1, LOW);
+  }
+
+  //Step 2
+  if (steps2[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut2, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut2, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut2, LOW);
+  }
+
+  //Step 3
+  if (steps3[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut3, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut3, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut3, LOW);
+  }
+
+  //Step 4
+  if (steps4[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut4, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut4, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut4, LOW);
+  }
+
+  //Step 5
+  if (steps5[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut5, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut5, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut5, LOW);
+  }
+
+  //Step 6
+  if (steps6[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut6, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut6, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut6, LOW);
+  }
+
+  //Step 7
+  if (steps7[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut7, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut7, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut7, LOW);
+  }
+
+  //Step 8
+  if (steps8[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut8, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut8, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut8, LOW);
+  }
+
+  //Step 9
+  if (steps9[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut9, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut9, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut9, LOW);
+  }
+
+  //Step 10
+  if (steps10[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut10, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut10, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut10, LOW);
+  }
+
+  //Step 11
+  if (steps11[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut11, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut11, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut11, LOW);
+  }
+
+  //Step 12
+  if (steps12[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut12, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut12, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut12, LOW);
+  }
+
+  //Step 13
+  if (steps13[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut13, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut13, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut13, LOW);
+  }
+
+  //Step 14
+  if (steps14[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut14, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut14, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut14, LOW);
+  }
+
+  //Step 15
+  if (steps15[currentRow][currentCol] == true)
+  {
+    //Triggers
+    if (count < trigCount)
+    {
+      digitalWrite(triggerOut15, HIGH);
+    }
+    else
+    {
+      digitalWrite(triggerOut15, LOW);
+    }
+  }
+  else
+  {
+    digitalWrite(triggerOut15, LOW);
+  }
+}
+
+
