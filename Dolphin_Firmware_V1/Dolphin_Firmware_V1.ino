@@ -1,9 +1,9 @@
 //TODO
-//Triggering code for all channels
+//Triggering code for all channels - To Test
 //Live-play scanning and triggering
 //I2C interfacing
 //Tempo
-//Start/Stop Button
+//Start/Stop Button - To Test
 
 //LEDS
 int ledRow0 = 22;
@@ -52,8 +52,11 @@ int buttonOut1 = 35;
 int buttonOut2 = 36;
 int buttonOut3 = 37;
 
+//Start-Stop
+int startStopButton = 3;
+volatile boolean run = false;
+
 //SEQUENCE
-boolean run = true;
 int count = 0;
 int maxCount = 400;
 int trigCount = 20;
@@ -155,6 +158,12 @@ void buttonSetup()
   pinMode(buttonOut2, OUTPUT);
   pinMode(buttonOut3, OUTPUT);
   Serial.begin(9600);//testing
+}
+
+void startStopSetup()
+{
+  pinMode(startStopButton, INPUT);
+  attachInterrupt(digitalPinToInterrupt(startStopButton), startStop, RISING);
 }
 
 void ledSetup()
@@ -586,6 +595,19 @@ void scanButtons()
       }
     }
     buttonRow = 1; 
+  }
+}
+
+//START STOP
+void startStop()
+{
+  if (run == true)
+  {
+    run = false;
+  }
+  else
+  {
+    run = true;
   }
 }
 
