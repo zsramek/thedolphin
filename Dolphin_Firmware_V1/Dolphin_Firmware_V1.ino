@@ -16,9 +16,11 @@ int ledCol2 = 28;
 int ledCol3 = 29;
 
 const int row[4] = {
-  ledRow0, ledRow1, ledRow2, ledRow3};
+  ledRow0, ledRow1, ledRow2, ledRow3
+};
 const int col[4] = {
-  ledCol0, ledCol1, ledCol2, ledCol3};
+  ledCol0, ledCol1, ledCol2, ledCol3
+};
 boolean lights[4][4];
 
 
@@ -54,7 +56,8 @@ int buttonOut3 = 37;
 
 //Start-Stop
 int startStopButton = 8;
-volatile boolean run = false;
+boolean startStopClicked = false;
+volatile boolean run = true;
 
 //SEQUENCE
 int count = 0;
@@ -122,16 +125,19 @@ void setup()
   ledSetup();
   triggerSetup();
   seqSetup();
+  startStopSetup();
 }
 
 void loop()
-{ 
+{
   runSeq();
   scanButtons();
   refreshLEDs();
   updateChannelData();
   scanRotary();
-  tempo();
+  //Serial.println(digitalRead(8));
+  startStop();
+  //tempo();
 }
 
 ////////////////////////
@@ -167,7 +173,8 @@ void buttonSetup()
 void startStopSetup()
 {
   pinMode(startStopButton, INPUT);
-  attachInterrupt(digitalPinToInterrupt(startStopButton), startStop, RISING);
+  //attachInterrupt(digitalPinToInterrupt(startStopButton), startStop, RISING);
+  //interrupts();
 }
 
 void ledSetup()
@@ -271,7 +278,7 @@ void tempo()
     rawTempoData = rawTempoData / 1024;
     maxCount = maxTempo * rawTempoData;
   }
-  
+
 }
 
 //BUTTONS
@@ -357,7 +364,7 @@ void scanButtons()
       {
         clicked3 = false;
       }
-    }    
+    }
 
     buttonRow = 2; //Must come after
   }
@@ -443,7 +450,7 @@ void scanButtons()
         clicked7 = false;
       }
     }
-    buttonRow = 3; 
+    buttonRow = 3;
   }
 
   //~~~~~~~~~~~~~~3~~~~~~~~~~~~~~~
@@ -527,7 +534,7 @@ void scanButtons()
         clicked11 = false;
       }
     }
-    buttonRow = 4; 
+    buttonRow = 4;
   }
 
   //~~~~~~~~~~~~~~4~~~~~~~~~~~~~~~
@@ -611,20 +618,28 @@ void scanButtons()
         clicked15 = false;
       }
     }
-    buttonRow = 1; 
+    buttonRow = 1;
   }
 }
 
 //START STOP
 void startStop()
 {
-  if (run == true)
+  if (digitalRead(startStopButton) == HIGH && startStopClicked == false)
   {
-    run = false;
+    startStopClicked = true;
+    if (run == true)
+    {
+      run = false;
+    }
+    else
+    {
+      run = true;
+    }
   }
-  else
+  else if (digitalRead(startStopButton) == LOW && startStopClicked == true)
   {
-    run = true;
+    startStopClicked = false;
   }
 }
 
