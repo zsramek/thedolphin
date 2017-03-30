@@ -59,7 +59,7 @@ int startStopButton = 8;
 boolean startStopClicked = false;
 boolean run = true;
 int startStopCount = 0;
-int startStopMax = 1000;
+int startStopMax = 50;
 boolean startStopCounting = false;
 
 //SEQUENCE
@@ -799,24 +799,39 @@ void updateChannelData()
 //START STOP
 void startStop()
 {
-  if (digitalRead(startStopButton) == HIGH)
+  if (digitalRead(startStopButton) == HIGH && startStopCount == 0)
+  {
+    startStopCounting = true;
+  }
+  if (startStopCounting == true)
+  {
+    if (startStopCount < startStopMax)
+    {
+      startStopCount++;
+    }
+    else
+    {
+      startStopCount = 0;
+      startStopCounting = false;
+    }
+  }
+  if (digitalRead(startStopButton) == HIGH && startStopCount >= startStopMax)
   {
     if (startStopClicked == false)
     {
+      startStopCounting = false;
+      startStopCount = 0;
       startStopClicked = true;
-      Serial.println("FUCK");
       run = !run;
       turnOffLEDs();
       currentStep = maxStep;
       count = maxCount;
     }
   }
-
   else if (digitalRead(startStopButton) == LOW)
   {
     if (startStopClicked == true)
     {
-      Serial.println("YOU");
       startStopClicked = false;
     }
   }
