@@ -2,8 +2,7 @@
 //Triggering code for all channels - To Test
 //Live-play scanning and triggering
 //I2C interfacing
-//Tempo - To Test
-//Start/Stop Button - To Test
+//Tempo - To Test - Needs New Wire
 
 //LEDS
 int ledRow0 = 22;
@@ -66,11 +65,12 @@ boolean startStopCounting = false;
 int count = 0;
 int maxCount = 400;
 int trigCount = 20;
+int trigCount0 = 20;
 int currentStep = 0;
 int maxStep = 15;
 int currentRow = 0;
 int currentCol = 3;
-int rawTempoData = 0;
+int rawTempoData = 512;
 int maxTempo = 20;
 int tempoThreshold = 5;
 
@@ -139,9 +139,9 @@ void loop()
     runSeq();
     scanButtons();
     refreshLEDs();
-    updateChannelData();
-    scanRotary();
   }
+  updateChannelData();
+  scanRotary();
   startStop();
   //tempo();
 }
@@ -277,14 +277,16 @@ void seqSetup()
 //TEMPO
 void tempo()
 {
+  rawTempoData = analogRead(A9);
+  Serial.println(rawTempoData);
   if ((analogRead(A9) - rawTempoData) > tempoThreshold || (analogRead(A9) - rawTempoData) < -tempoThreshold)
   {
     rawTempoData = analogRead(A9);
-    rawTempoData = 1024 - rawTempoData;
-    rawTempoData = rawTempoData / 1024;
-    maxCount = maxTempo * rawTempoData;
+    Serial.println(rawTempoData);
+    //rawTempoData = 1024 - rawTempoData;
+    //rawTempoData = rawTempoData / 1024;
+    //maxCount = maxTempo * rawTempoData;
   }
-
 }
 
 //BUTTONS
