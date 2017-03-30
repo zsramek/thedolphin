@@ -57,7 +57,10 @@ int buttonOut3 = 37;
 //Start-Stop
 int startStopButton = 8;
 boolean startStopClicked = false;
-volatile boolean run = true;
+boolean run = true;
+int startStopCount = 0;
+int startStopMax = 1000;
+boolean startStopCounting = false;
 
 //SEQUENCE
 int count = 0;
@@ -130,12 +133,15 @@ void setup()
 
 void loop()
 {
-  runSeq();
-  scanButtons();
-  refreshLEDs();
-  updateChannelData();
-  scanRotary();
-  //Serial.println(digitalRead(8));
+  //Serial.println(run);
+  if (run == true)
+  {
+    runSeq();
+    scanButtons();
+    refreshLEDs();
+    updateChannelData();
+    scanRotary();
+  }
   startStop();
   //tempo();
 }
@@ -174,7 +180,7 @@ void startStopSetup()
 {
   pinMode(startStopButton, INPUT);
   //attachInterrupt(digitalPinToInterrupt(startStopButton), startStop, RISING);
-  //interrupts();
+  //noInterrupts();
 }
 
 void ledSetup()
@@ -622,27 +628,6 @@ void scanButtons()
   }
 }
 
-//START STOP
-void startStop()
-{
-  if (digitalRead(startStopButton) == HIGH && startStopClicked == false)
-  {
-    startStopClicked = true;
-    if (run == true)
-    {
-      run = false;
-    }
-    else
-    {
-      run = true;
-    }
-  }
-  else if (digitalRead(startStopButton) == LOW && startStopClicked == true)
-  {
-    startStopClicked = false;
-  }
-}
-
 //CHANNEL SELECT
 void scanRotary()
 {
@@ -811,6 +796,32 @@ void updateChannelData()
   }
 }
 
+//START STOP
+void startStop()
+{
+  if (digitalRead(startStopButton) == HIGH)
+  {
+    if (startStopClicked == false)
+    {
+      startStopClicked = true;
+      Serial.println("FUCK");
+      run = !run;
+      turnOffLEDs();
+      currentStep = maxStep;
+      count = maxCount;
+    }
+  }
+
+  else if (digitalRead(startStopButton) == LOW)
+  {
+    if (startStopClicked == true)
+    {
+      Serial.println("YOU");
+      startStopClicked = false;
+    }
+  }
+}
+
 //LEDs
 void refreshLEDs()
 {
@@ -833,41 +844,45 @@ void refreshLEDs()
 //SEQUENCER
 void runSeq()
 {
-  if (run)
+  if (count >= maxCount)
   {
-    if (count >= maxCount)
+    count = 0;
+    alignSteps();
+    if (currentStep < maxStep)
     {
-      count = 0;
-      alignSteps();
-      if (currentStep < maxStep)
-      {
-        currentStep++;
-      }
-      else
-      {
-        currentStep = 0;
-      }
-      decodeStep();
+      currentStep++;
     }
     else
     {
-      count++;
-      if (steps[currentRow][currentCol] == true)
-      {
-        //LEDs
-        lights[currentRow][currentCol] = HIGH;
-      }
-      else
-      {
-        lights[currentRow][currentCol] = LOW;
-      }
-      sendTriggers();
+      currentStep = 0;
     }
-
+    decodeStep();
+  }
+  else
+  {
+    count++;
+    if (steps[currentRow][currentCol] == true)
+    {
+      //LEDs
+      lights[currentRow][currentCol] = HIGH;
+    }
+    else
+    {
+      lights[currentRow][currentCol] = LOW;
+    }
+    sendTriggers();
   }
 }
 
 //////////////////////SUBROUTINES////////////////////
+
+void turnOffLEDs()
+{
+  for (int thisRow = 0; thisRow < 4; thisRow++)
+  {
+    digitalWrite(row[thisRow], LOW);
+  }
+}
 
 //This subroutine looks at the current step and sets the column and row correctly
 void decodeStep()
