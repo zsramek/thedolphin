@@ -17,14 +17,14 @@ int triggerOut14 = 52;
 int triggerOut15 = 53;
 
 //Live-Play Pins
-int livePlayIn0 = 0;
-int livePlayIn1 = 1;
-int livePlayIn2 = 2;
-int livePlayIn3 = 3;
-int livePlayOut0 = 4;
-int livePlayOut1 = 5;
-int livePlayOut2 = 6;
-int livePlayOut3 = 7;
+int livePlayIn0 = 2;
+int livePlayIn1 = 3;
+int livePlayIn2 = 4;
+int livePlayIn3 = 5;
+int livePlayOut0 = 6;
+int livePlayOut1 = 7;
+int livePlayOut2 = 8;
+int livePlayOut3 = 9;
 
 boolean livePlayClicked0 = false;
 boolean livePlayClicked1 = false;
@@ -117,7 +117,6 @@ void setup()
 void loop()
 {
   scanButtons();
-  Serial.println(button);
 }
 
 void scanButtons()
@@ -125,6 +124,7 @@ void scanButtons()
   //~~~~~~~~~~~~~~1~~~~~~~~~~~~~~~
   if (livePlayRow == 1)
   {
+    //Serial.println("Row1");
     digitalWrite(livePlayOut0, HIGH);
     digitalWrite(livePlayOut1, LOW);
     digitalWrite(livePlayOut2, LOW);
@@ -138,7 +138,7 @@ void scanButtons()
     {
       if (livePlayCount0 < livePlayMax)
       {
-      livePlayCount0++;
+        livePlayCount0++;
       }
       else
       {
@@ -150,7 +150,8 @@ void scanButtons()
     {
       if (livePlayClicked0 == false)
       {
-        button = 1;
+        button = 15;
+        Serial.println("15");
         //steps[0][0] = !//steps[0][0];
         livePlayClicked0 = true;
         livePlayCounting0 = false;
@@ -175,7 +176,7 @@ void scanButtons()
     {
       if (livePlayCount1 < livePlayMax)
       {
-      livePlayCount1++;
+        livePlayCount1++;
       }
       else
       {
@@ -187,7 +188,8 @@ void scanButtons()
     {
       if (livePlayClicked1 == false)
       {
-        button = 2;
+        button = 13;
+        Serial.println("13");
         //steps[0][0] = !//steps[0][0];
         livePlayClicked1 = true;
         livePlayCounting1 = false;
@@ -212,7 +214,7 @@ void scanButtons()
     {
       if (livePlayCount2 < livePlayMax)
       {
-      livePlayCount2++;
+        livePlayCount2++;
       }
       else
       {
@@ -224,7 +226,8 @@ void scanButtons()
     {
       if (livePlayClicked2 == false)
       {
-        button = 3;
+        button = 11;
+        Serial.println("11");
         //steps[0][0] = !//steps[0][0];
         livePlayClicked2 = true;
         livePlayCounting2 = false;
@@ -241,13 +244,32 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn3) == HIGH)
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount3 == 0)
+    {
+      livePlayCounting3 = true;
+    }
+    if (livePlayCounting3 == true)
+    {
+      if (livePlayCount3 < livePlayMax)
+      {
+        livePlayCount3++;
+      }
+      else
+      {
+        livePlayCount3 = 0;
+        livePlayCounting3 = false;
+      }
+    }
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount3 >= livePlayMax)
     {
       if (livePlayClicked3 == false)
       {
-        button = 4;
-        //steps[0][3] = !//steps[0][3];
+        button = 9;
+        Serial.println("9");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked3 = true;
+        livePlayCounting3 = false;
+        livePlayCount3 = 0;
       }
     }
     else if (digitalRead(livePlayIn3) == LOW)
@@ -257,25 +279,43 @@ void scanButtons()
         livePlayClicked3 = false;
       }
     }
-
-    livePlayRow = 2; //Must come after
+    livePlayRow = 2;
   }
-
   //~~~~~~~~~~~~~~2~~~~~~~~~~~~~~~
-  else if (livePlayRow == 2)
+  if (livePlayRow == 2)
   {
+    //Serial.println("Row2");
     digitalWrite(livePlayOut1, HIGH);
     digitalWrite(livePlayOut0, LOW);
     digitalWrite(livePlayOut2, LOW);
     digitalWrite(livePlayOut3, LOW);
 
-    if (digitalRead(livePlayIn0) == HIGH)
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount4 == 0)
+    {
+      livePlayCounting4 = true;
+    }
+    if (livePlayCounting4 == true)
+    {
+      if (livePlayCount4 < livePlayMax)
+      {
+        livePlayCount4++;
+      }
+      else
+      {
+        livePlayCount4 = 0;
+        livePlayCounting4 = false;
+      }
+    }
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount4 >= livePlayMax)
     {
       if (livePlayClicked4 == false)
       {
-        button = 5;
-        //steps[1][0] = !//steps[1][0];
+        button = 7;
+        Serial.println("7");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked4 = true;
+        livePlayCounting4 = false;
+        livePlayCount4 = 0;
       }
     }
     else if (digitalRead(livePlayIn0) == LOW)
@@ -286,15 +326,34 @@ void scanButtons()
       }
     }
 
-    //~~~
+    //~~~~
 
-    if (digitalRead(livePlayIn1) == HIGH)
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount5 == 0)
+    {
+      livePlayCounting5 = true;
+    }
+    if (livePlayCounting5 == true)
+    {
+      if (livePlayCount5 < livePlayMax)
+      {
+        livePlayCount5++;
+      }
+      else
+      {
+        livePlayCount5 = 0;
+        livePlayCounting5 = false;
+      }
+    }
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount5 >= livePlayMax)
     {
       if (livePlayClicked5 == false)
       {
-        button = 6;
-        //steps[1][1] = !//steps[1][1];
+        button = 5;
+        Serial.println("5");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked5 = true;
+        livePlayCounting5 = false;
+        livePlayCount5 = 0;
       }
     }
     else if (digitalRead(livePlayIn1) == LOW)
@@ -307,13 +366,32 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn2) == HIGH)
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount6 == 0)
+    {
+      livePlayCounting6 = true;
+    }
+    if (livePlayCounting6 == true)
+    {
+      if (livePlayCount6 < livePlayMax)
+      {
+        livePlayCount6++;
+      }
+      else
+      {
+        livePlayCount6 = 0;
+        livePlayCounting6 = false;
+      }
+    }
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount6 >= livePlayMax)
     {
       if (livePlayClicked6 == false)
       {
-        button = 7;
-        //steps[1][2] = !//steps[1][2];
+        button = 3;
+        Serial.println("3");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked6 = true;
+        livePlayCounting6 = false;
+        livePlayCount6 = 0;
       }
     }
     else if (digitalRead(livePlayIn2) == LOW)
@@ -326,13 +404,32 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn3) == HIGH)
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount7 == 0)
+    {
+      livePlayCounting7 = true;
+    }
+    if (livePlayCounting7 == true)
+    {
+      if (livePlayCount7 < livePlayMax)
+      {
+        livePlayCount7++;
+      }
+      else
+      {
+        livePlayCount7 = 0;
+        livePlayCounting7 = false;
+      }
+    }
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount7 >= livePlayMax)
     {
       if (livePlayClicked7 == false)
       {
-        button = 8;
-        //steps[1][3] = !//steps[1][3];
+        button = 1;
+        Serial.println("1");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked7 = true;
+        livePlayCounting7 = false;
+        livePlayCount7 = 0;
       }
     }
     else if (digitalRead(livePlayIn3) == LOW)
@@ -348,18 +445,38 @@ void scanButtons()
   //~~~~~~~~~~~~~~3~~~~~~~~~~~~~~~
   if (livePlayRow == 3)
   {
+    //Serial.println("Row3");
     digitalWrite(livePlayOut2, HIGH);
     digitalWrite(livePlayOut0, LOW);
     digitalWrite(livePlayOut1, LOW);
     digitalWrite(livePlayOut3, LOW);
 
-    if (digitalRead(livePlayIn0) == HIGH)
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount8 == 0)
+    {
+      livePlayCounting8 = true;
+    }
+    if (livePlayCounting8 == true)
+    {
+      if (livePlayCount8 < livePlayMax)
+      {
+        livePlayCount8++;
+      }
+      else
+      {
+        livePlayCount8 = 0;
+        livePlayCounting8 = false;
+      }
+    }
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount8 >= livePlayMax)
     {
       if (livePlayClicked8 == false)
       {
-        button = 9;
-        //steps[2][0] = !//steps[2][0];
+        button = 16;
+        Serial.println("16");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked8 = true;
+        livePlayCounting8 = false;
+        livePlayCount8 = 0;
       }
     }
     else if (digitalRead(livePlayIn0) == LOW)
@@ -372,13 +489,32 @@ void scanButtons()
 
     //~~~~
 
-    if (digitalRead(livePlayIn1) == HIGH)
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount9 == 0)
+    {
+      livePlayCounting9 = true;
+    }
+    if (livePlayCounting9 == true)
+    {
+      if (livePlayCount9 < livePlayMax)
+      {
+        livePlayCount9++;
+      }
+      else
+      {
+        livePlayCount9 = 0;
+        livePlayCounting9 = false;
+      }
+    }
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount9 >= livePlayMax)
     {
       if (livePlayClicked9 == false)
       {
-        button = 10;
-        //steps[2][1] = !//steps[2][1];
+        button = 14;
+        Serial.println("14");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked9 = true;
+        livePlayCounting9 = false;
+        livePlayCount9 = 0;
       }
     }
     else if (digitalRead(livePlayIn1) == LOW)
@@ -391,13 +527,32 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn2) == HIGH)
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount10 == 0)
+    {
+      livePlayCounting10 = true;
+    }
+    if (livePlayCounting10 == true)
+    {
+      if (livePlayCount10 < livePlayMax)
+      {
+        livePlayCount10++;
+      }
+      else
+      {
+        livePlayCount10 = 0;
+        livePlayCounting10 = false;
+      }
+    }
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount10 >= livePlayMax)
     {
       if (livePlayClicked10 == false)
       {
-        button = 11;
-        //steps[2][2] = !//steps[2][2];
+        button = 12;
+        Serial.println("12");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked10 = true;
+        livePlayCounting10 = false;
+        livePlayCount10 = 0;
       }
     }
     else if (digitalRead(livePlayIn2) == LOW)
@@ -410,13 +565,32 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn3) == HIGH)
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount11 == 0)
+    {
+      livePlayCounting11 = true;
+    }
+    if (livePlayCounting11 == true)
+    {
+      if (livePlayCount11 < livePlayMax)
+      {
+        livePlayCount11++;
+      }
+      else
+      {
+        livePlayCount11 = 0;
+        livePlayCounting11 = false;
+      }
+    }
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount11 >= livePlayMax)
     {
       if (livePlayClicked11 == false)
       {
-        button = 12;
-        //steps[2][3] = !//steps[2][3];
+        button = 10;
+        Serial.println("10");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked11 = true;
+        livePlayCounting11 = false;
+        livePlayCount11 = 0;
       }
     }
     else if (digitalRead(livePlayIn3) == LOW)
@@ -432,18 +606,38 @@ void scanButtons()
   //~~~~~~~~~~~~~~4~~~~~~~~~~~~~~~
   if (livePlayRow == 4)
   {
+    //Serial.println("Row4");
     digitalWrite(livePlayOut3, HIGH);
     digitalWrite(livePlayOut0, LOW);
     digitalWrite(livePlayOut1, LOW);
     digitalWrite(livePlayOut2, LOW);
 
-    if (digitalRead(livePlayIn0) == HIGH)
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount12 == 0)
+    {
+      livePlayCounting12 = true;
+    }
+    if (livePlayCounting12 == true)
+    {
+      if (livePlayCount12 < livePlayMax)
+      {
+        livePlayCount12++;
+      }
+      else
+      {
+        livePlayCount12 = 0;
+        livePlayCounting12 = false;
+      }
+    }
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount12 >= livePlayMax)
     {
       if (livePlayClicked12 == false)
       {
-        button = 13;
-        //steps[3][0] = !//steps[3][0];
+        button = 8;
+        Serial.println("8");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked12 = true;
+        livePlayCounting12 = false;
+        livePlayCount12 = 0;
       }
     }
     else if (digitalRead(livePlayIn0) == LOW)
@@ -456,13 +650,32 @@ void scanButtons()
 
     //~~~~
 
-    if (digitalRead(livePlayIn1) == HIGH)
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount13 == 0)
+    {
+      livePlayCounting13 = true;
+    }
+    if (livePlayCounting13 == true)
+    {
+      if (livePlayCount13 < livePlayMax)
+      {
+        livePlayCount13++;
+      }
+      else
+      {
+        livePlayCount13 = 0;
+        livePlayCounting13 = false;
+      }
+    }
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount13 >= livePlayMax)
     {
       if (livePlayClicked13 == false)
       {
-        button = 14;
-        //steps[3][1] = !//steps[3][1];
+        button = 6;
+        Serial.println("6");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked13 = true;
+        livePlayCounting13 = false;
+        livePlayCount13 = 0;
       }
     }
     else if (digitalRead(livePlayIn1) == LOW)
@@ -475,13 +688,32 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn2) == HIGH)
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount14 == 0)
+    {
+      livePlayCounting14 = true;
+    }
+    if (livePlayCounting14 == true)
+    {
+      if (livePlayCount14 < livePlayMax)
+      {
+        livePlayCount14++;
+      }
+      else
+      {
+        livePlayCount14 = 0;
+        livePlayCounting14 = false;
+      }
+    }
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount14 >= livePlayMax)
     {
       if (livePlayClicked14 == false)
       {
-        button = 15;
-        //steps[3][2] = !//steps[3][2];
+        button = 4;
+        Serial.println("4");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked14 = true;
+        livePlayCounting14 = false;
+        livePlayCount14 = 0;
       }
     }
     else if (digitalRead(livePlayIn2) == LOW)
@@ -494,13 +726,32 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn3) == HIGH)
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount15 == 0)
+    {
+      livePlayCounting15 = true;
+    }
+    if (livePlayCounting15 == true)
+    {
+      if (livePlayCount15 < livePlayMax)
+      {
+        livePlayCount15++;
+      }
+      else
+      {
+        livePlayCount15 = 0;
+        livePlayCounting15 = false;
+      }
+    }
+    if (digitalRead(livePlayIn3) == HIGH && livePlayCount15 >= livePlayMax)
     {
       if (livePlayClicked15 == false)
       {
-        button = 16;
-        //steps[3][3] = !//steps[3][3];
+        button = 2;
+        Serial.println("2");
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked15 = true;
+        livePlayCounting15 = false;
+        livePlayCount15 = 0;
       }
     }
     else if (digitalRead(livePlayIn3) == LOW)
@@ -512,4 +763,5 @@ void scanButtons()
     }
     livePlayRow = 1;
   }
+
 }
