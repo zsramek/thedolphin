@@ -43,6 +43,42 @@ boolean livePlayClicked13 = false;
 boolean livePlayClicked14 = false;
 boolean livePlayClicked15 = false;
 
+int livePlayCount0 = 0;
+int livePlayCount1 = 0;
+int livePlayCount2 = 0;
+int livePlayCount3 = 0;
+int livePlayCount4 = 0;
+int livePlayCount5 = 0;
+int livePlayCount6 = 0;
+int livePlayCount7 = 0;
+int livePlayCount8 = 0;
+int livePlayCount9 = 0;
+int livePlayCount10 = 0;
+int livePlayCount11 = 0;
+int livePlayCount12 = 0;
+int livePlayCount13 = 0;
+int livePlayCount14 = 0;
+int livePlayCount15 = 0;
+
+boolean livePlayCounting0 = false;
+boolean livePlayCounting1 = false;
+boolean livePlayCounting2 = false;
+boolean livePlayCounting3 = false;
+boolean livePlayCounting4 = false;
+boolean livePlayCounting5 = false;
+boolean livePlayCounting6 = false;
+boolean livePlayCounting7 = false;
+boolean livePlayCounting8 = false;
+boolean livePlayCounting9 = false;
+boolean livePlayCounting10 = false;
+boolean livePlayCounting11 = false;
+boolean livePlayCounting12 = false;
+boolean livePlayCounting13 = false;
+boolean livePlayCounting14 = false;
+boolean livePlayCounting15 = false;
+
+int livePlayMax = 50;
+
 int livePlayRow = 1;
 
 int button = 0;
@@ -70,15 +106,18 @@ void setup()
   pinMode(livePlayIn1, INPUT);
   pinMode(livePlayIn2, INPUT);
   pinMode(livePlayIn3, INPUT);
-  pinMode(livePlayOut0, INPUT);
-  pinMode(livePlayOut1, INPUT);
-  pinMode(livePlayOut2, INPUT);
-  pinMode(livePlayOut3, INPUT);
+  pinMode(livePlayOut0, OUTPUT);
+  pinMode(livePlayOut1, OUTPUT);
+  pinMode(livePlayOut2, OUTPUT);
+  pinMode(livePlayOut3, OUTPUT);
+
+  Serial.begin(9600);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-
+void loop()
+{
+  scanButtons();
+  Serial.println(button);
 }
 
 void scanButtons()
@@ -91,13 +130,31 @@ void scanButtons()
     digitalWrite(livePlayOut2, LOW);
     digitalWrite(livePlayOut3, LOW);
 
-    if (digitalRead(livePlayIn0) == HIGH)
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount0 == 0)
+    {
+      livePlayCounting0 = true;
+    }
+    if (livePlayCounting0 == true)
+    {
+      if (livePlayCount0 < livePlayMax)
+      {
+      livePlayCount0++;
+      }
+      else
+      {
+        livePlayCount0 = 0;
+        livePlayCounting0 = false;
+      }
+    }
+    if (digitalRead(livePlayIn0) == HIGH && livePlayCount0 >= livePlayMax)
     {
       if (livePlayClicked0 == false)
       {
         button = 1;
         //steps[0][0] = !//steps[0][0];
         livePlayClicked0 = true;
+        livePlayCounting0 = false;
+        livePlayCount0 = 0;
       }
     }
     else if (digitalRead(livePlayIn0) == LOW)
@@ -110,13 +167,31 @@ void scanButtons()
 
     //~~~~
 
-    if (digitalRead(livePlayIn1) == HIGH)
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount1 == 0)
+    {
+      livePlayCounting1 = true;
+    }
+    if (livePlayCounting1 == true)
+    {
+      if (livePlayCount1 < livePlayMax)
+      {
+      livePlayCount1++;
+      }
+      else
+      {
+        livePlayCount1 = 0;
+        livePlayCounting1 = false;
+      }
+    }
+    if (digitalRead(livePlayIn1) == HIGH && livePlayCount1 >= livePlayMax)
     {
       if (livePlayClicked1 == false)
       {
         button = 2;
-        //steps[0][1] = !//steps[0][1];
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked1 = true;
+        livePlayCounting1 = false;
+        livePlayCount1 = 0;
       }
     }
     else if (digitalRead(livePlayIn1) == LOW)
@@ -129,13 +204,31 @@ void scanButtons()
 
     //~~~
 
-    if (digitalRead(livePlayIn2) == HIGH)
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount2 == 0)
+    {
+      livePlayCounting2 = true;
+    }
+    if (livePlayCounting2 == true)
+    {
+      if (livePlayCount2 < livePlayMax)
+      {
+      livePlayCount2++;
+      }
+      else
+      {
+        livePlayCount2 = 0;
+        livePlayCounting2 = false;
+      }
+    }
+    if (digitalRead(livePlayIn2) == HIGH && livePlayCount2 >= livePlayMax)
     {
       if (livePlayClicked2 == false)
       {
         button = 3;
-        //steps[0][2] = !//steps[0][2];
+        //steps[0][0] = !//steps[0][0];
         livePlayClicked2 = true;
+        livePlayCounting2 = false;
+        livePlayCount2 = 0;
       }
     }
     else if (digitalRead(livePlayIn2) == LOW)
