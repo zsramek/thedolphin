@@ -149,11 +149,11 @@ void setup()
 
 void loop()
 {
-  scanButtons();
+  scanLivePlay();
   liveTrigger();
 }
 
-void scanButtons()
+void scanLivePlay()
 {
   //~~~~~~~~~~~~~~1~~~~~~~~~~~~~~~
   if (livePlayRow == 1)

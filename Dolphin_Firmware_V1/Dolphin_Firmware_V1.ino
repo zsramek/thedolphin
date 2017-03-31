@@ -1,5 +1,4 @@
 //TODO
-//Live-play scanning and triggering
 //I2C interfacing
 
 //LEDS
@@ -243,8 +242,8 @@ void loop()
   scanRotary();
   startStop();
   tempo();
-  //scanLivePlay();
-  //liveTrigger();
+  scanLivePlay();
+  liveTrigger();
 }
 
 ////////////////////////
