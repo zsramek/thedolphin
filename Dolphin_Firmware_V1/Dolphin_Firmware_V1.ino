@@ -211,6 +211,8 @@ int liveTrigCount15 = 0;
 int livePlayMax = 50;
 int livePlayRow = 1;
 
+boolean livePlayActive = true;
+
 //temp
 int triggerOut = 38;
 //temp
@@ -242,8 +244,11 @@ void loop()
   scanRotary();
   startStop();
   tempo();
+  if (livePlayActive)
+  {
   scanLivePlay();
   liveTrigger();
+  }
 }
 
 ////////////////////////
@@ -2150,12 +2155,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut0, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut0, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut0, LOW);
   }
@@ -2168,12 +2173,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut1, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut1, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut1, LOW);
   }
@@ -2186,12 +2191,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut2, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut2, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut2, LOW);
   }
@@ -2204,12 +2209,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut3, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut3, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut3, LOW);
   }
@@ -2222,12 +2227,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut4, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut4, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut4, LOW);
   }
@@ -2240,12 +2245,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut5, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut5, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut5, LOW);
   }
@@ -2258,12 +2263,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut6, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut6, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut6, LOW);
   }
@@ -2276,12 +2281,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut7, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut7, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut7, LOW);
   }
@@ -2294,12 +2299,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut8, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut8, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut8, LOW);
   }
@@ -2312,12 +2317,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut9, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut9, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut9, LOW);
   }
@@ -2330,12 +2335,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut10, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut10, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut10, LOW);
   }
@@ -2348,12 +2353,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut11, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut11, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut11, LOW);
   }
@@ -2366,12 +2371,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut12, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut12, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut12, LOW);
   }
@@ -2384,12 +2389,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut13, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut13, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut13, LOW);
   }
@@ -2402,12 +2407,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut14, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut14, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut14, LOW);
   }
@@ -2420,12 +2425,12 @@ void sendTriggers()
     {
       digitalWrite(triggerOut15, HIGH);
     }
-    else
+    else if (!livePlayActive)
     {
       digitalWrite(triggerOut15, LOW);
     }
   }
-  else
+  else if (!livePlayActive)
   {
     digitalWrite(triggerOut15, LOW);
   }
