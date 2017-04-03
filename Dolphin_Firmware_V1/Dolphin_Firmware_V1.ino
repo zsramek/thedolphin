@@ -1,5 +1,29 @@
 //TODO
-//I2C interfacing
+//I2C interfacing - need to test
+
+#include <Wire.h>
+
+//I2C
+//tempo already -> maxCount
+//channel already -> channel + bank
+// Save and load settings arrays
+char new_settings[263];
+char current_settings[263];
+// UI buttons
+int loop_up = 6;
+int loop_down = 7;
+
+int loop_number = 0;
+int max_loop_number = 99;
+
+// Button de-bounce
+boolean loopClicked0 = false;
+boolean loopClicked1 = false;
+
+// Loop change
+boolean loop_change_up =  false;
+boolean loop_change_down = false;
+char change_cstr = '\0';
 
 //LEDS
 int ledRow0 = 22;
@@ -18,7 +42,6 @@ const int col[4] = {
   ledCol0, ledCol1, ledCol2, ledCol3
 };
 boolean lights[4][4];
-
 
 //BUTTONS
 int buttonRow = 1;
@@ -221,6 +244,7 @@ int triggerOut = 38;
 
 void setup()
 {
+  i2cSetup();
   livePlaySetup();
   rotarySetup();
   buttonSetup();
@@ -249,9 +273,22 @@ void loop()
   scanLivePlay();
   liveTrigger();
   }
+  i2c();
 }
 
 ////////////////////////
+
+void i2cSetup()
+{
+  pinMode(loop_up,INPUT);
+  pinMode(loop_down,INPUT);
+  
+  digitalWrite(loop_up,LOW);
+  digitalWrite(loop_down,LOW);
+
+  // join i2c bus 
+  Wire.begin();  
+}
 
 void livePlaySetup()
 {
@@ -387,6 +424,22 @@ void seqSetup()
       steps15[i][j] = false;
     }
   }
+}
+
+//I2C
+void i2c()
+{
+   // Slow for testing
+  //delay(1000);
+  
+  // Determine if loop changes and load settings
+  loop_change();
+
+  pollLoopButtons();
+
+  // Move send_settings to pollLoopButtons after each poll
+  // To increase the update rate of the LCD
+  send_settings();
 }
 
 //TEMPO
@@ -2436,4 +2489,233 @@ void sendTriggers()
   }
 }
 
+void loop_change()
+{
+  if ( loop_change_up == true)
+  {
+  loop_number ++;
+  load_settings();
+  loop_change_up = false;
+  }
 
+  if ( loop_change_down == true)
+  {
+  loop_number --;
+  load_settings();
+  loop_change_down = false;
+  }
+}
+
+void pollLoopButtons()
+{
+  // Loop up
+  if (digitalRead(loop_up) == HIGH && loop_number < max_loop_number && loopClicked0 == false)
+  {
+    loop_change_up = true;
+    change_cstr = '0';
+    loopClicked0 = true;
+  }
+
+  else if (digitalRead(loop_up) == LOW && loopClicked0 == true)
+  loopClicked0 = false;
+
+  // loop down  
+  if (digitalRead(loop_down) == HIGH && loop_number > 0 && loopClicked1 == false)
+  {
+    loop_change_down = true;
+    change_cstr = '1';
+    loopClicked1 = true;
+  }
+  
+  else if (digitalRead(loop_down) == LOW && loopClicked1 == true)
+  loopClicked1 = false;
+}
+
+void send_settings()
+{ 
+  // Create a string of all settings
+  
+  // Zero padding for loop_number
+  char loop_padding = '\0';
+  if (loop_number < 10)
+  loop_padding = '0';
+
+  // Zero padding for tempo. Combine into one array
+  char tempo_padding_0 = '\0';
+  char tempo_padding_1 = '\0';
+  if (tempo < 100)
+  {
+    tempo_padding_0 = '0';
+
+    if (tempo < 10)
+    tempo_padding_1 = '0';
+  }
+
+  // Zero padding for channel
+  char channel_padding = '\0';
+  if (channel < 10)
+  channel_padding = '0';
+
+  // Get string of steps
+  String all_steps = steps_string();
+  
+  // Combined settings string
+  String combine =String(loop_padding)+String(loop_number)+String(tempo_padding_0)+String(tempo_padding_1)+String(maxCount)+String(channel_padding)+String(channel)+String(change_cstr)+all_steps+String('\0');
+  // Convert string to char array
+  combine.toCharArray(current_settings,263); 
+
+  // Send settings to slave
+  Wire.beginTransmission(8);     // transmit to device #8
+  Wire.write(current_settings);              
+  Wire.endTransmission();        // stop transmitting
+}
+
+void load_settings ()
+{
+  // Read settings from slave
+  Wire.requestFrom(8, 263); 
+  
+  while (Wire.available()) 
+  { 
+  for (byte i = 0; i < 263 ; i ++)
+    {
+      char c = Wire.read();
+      new_settings[i] = c;
+    }
+  }
+}
+
+String steps_string ()
+{
+  String str;
+
+  for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps0[i][n]);
+    }
+  }
+
+  for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps1[i][n]);
+    }
+  }
+
+  for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps2[i][n]);
+    }
+  }
+  
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps3[i][n]);
+    }
+  }
+  
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps4[i][n]);
+    }
+  }
+  
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps5[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps6[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps7[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps8[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps9[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps10[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps11[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps12[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps13[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps14[i][n]);
+    }
+  }
+
+    for (int i = 0; i < 4; i++)
+  {
+    for (int n = 0; n < 4; n++)
+    {
+      str += String (steps15[i][n]);
+    }
+  }
+
+  return str;
+}

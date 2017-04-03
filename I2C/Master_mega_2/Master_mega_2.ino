@@ -24,8 +24,8 @@ int loop_number = 0;
 int max_loop_number = 99;
 
 // Button de-bounce
-boolean clicked8 = false;
-boolean clicked9 = false;
+boolean loopClicked0 = false;
+boolean loopClicked1 = false;
 
 // Loop change
 boolean loop_change_up =  false;
@@ -52,7 +52,7 @@ void loop()
   // Determine if loop changes and load settings
   loop_change();
 
-  poll_buttons();
+  pollLoopButtons();
 
   // Settings from loop: poll buttons, tempo, intrument #
   int tempo = 120;
@@ -62,7 +62,7 @@ void loop()
   int ch1_8 = 1000;
   int ch1_12 = 1000;
 
-  // Move send_settings to poll_buttons after each poll
+  // Move send_settings to pollLoopButtons after each poll
   // To increase the update rate of the LCD
   send_settings();
 }
@@ -84,29 +84,29 @@ void loop_change()
   }
 }
 
-void poll_buttons()
+void pollLoopButtons()
 {
   // Loop up
-  if (digitalRead(loop_up) == HIGH && loop_number < max_loop_number && clicked8 == false)
+  if (digitalRead(loop_up) == HIGH && loop_number < max_loop_number && loopClicked0 == false)
   {
     loop_change_up = true;
     change_cstr = '0';
-    clicked8 = true;
+    loopClicked0 = true;
   }
 
-  else if (digitalRead(loop_up) == LOW && clicked8 == true)
-  clicked8 = false;
+  else if (digitalRead(loop_up) == LOW && loopClicked0 == true)
+  loopClicked0 = false;
 
   // loop down  
-  if (digitalRead(loop_down) == HIGH && loop_number > 0 && clicked9 == false)
+  if (digitalRead(loop_down) == HIGH && loop_number > 0 && loopClicked1 == false)
   {
     loop_change_down = true;
     change_cstr = '1';
-    clicked9 = true;
+    loopClicked1 = true;
   }
   
-  else if (digitalRead(loop_down) == LOW && clicked9 == true)
-  clicked9 = false;
+  else if (digitalRead(loop_down) == LOW && loopClicked1 == true)
+  loopClicked1 = false;
 }
 
 void send_settings()
