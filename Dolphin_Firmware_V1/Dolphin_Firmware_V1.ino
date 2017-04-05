@@ -10,8 +10,8 @@
 char new_settings[270];
 char current_settings[270];
 // UI buttons
-int loop_up = 6;
-int loop_down = 7;
+int loop_up = 7;
+int loop_down = 6;
 
 int loop_number = 0;
 int max_loop_number = 99;
@@ -263,15 +263,19 @@ void loop()
     scanButtons();
     refreshLEDs();
   }
-  
+//  else
+//  {
+//    send_settings();
+//  }
+
   updateChannelData();
   scanRotary();
   startStop();
   tempo();
   if (livePlayActive)
   {
-  scanLivePlay();
-  liveTrigger();
+    scanLivePlay();
+    liveTrigger();
   }
   i2c();
 }
@@ -280,14 +284,14 @@ void loop()
 
 void i2cSetup()
 {
-  pinMode(loop_up,INPUT);
-  pinMode(loop_down,INPUT);
-  
-  digitalWrite(loop_up,LOW);
-  digitalWrite(loop_down,LOW);
+  pinMode(loop_up, INPUT);
+  pinMode(loop_down, INPUT);
 
-  // join i2c bus 
-  Wire.begin();  
+  digitalWrite(loop_up, LOW);
+  digitalWrite(loop_down, LOW);
+
+  // join i2c bus
+  Wire.begin();
 }
 
 void livePlaySetup()
@@ -429,9 +433,9 @@ void seqSetup()
 //I2C
 void i2c()
 {
-   // Slow for testing
+  // Slow for testing
   //delay(1000);
-  
+
   // Determine if loop changes and load settings
   loop_change();
 
@@ -439,7 +443,7 @@ void i2c()
 
   // Move send_settings to pollLoopButtons after each poll
   // To increase the update rate of the LCD
-  send_settings();
+//  send_settings();
 }
 
 //TEMPO
@@ -2064,6 +2068,7 @@ void runSeq()
     else
     {
       currentStep = 0;
+      send_settings();
     }
     decodeStep();
   }
@@ -2493,16 +2498,16 @@ void loop_change()
 {
   if ( loop_change_up == true)
   {
-  loop_number ++;
-  load_settings();
-  loop_change_up = false;
+    loop_number ++;
+    load_settings();
+    loop_change_up = false;
   }
 
   if ( loop_change_down == true)
   {
-  loop_number --;
-  load_settings();
-  loop_change_down = false;
+    loop_number --;
+    load_settings();
+    loop_change_down = false;
   }
 }
 
@@ -2517,28 +2522,28 @@ void pollLoopButtons()
   }
 
   else if (digitalRead(loop_up) == LOW && loopClicked0 == true)
-  loopClicked0 = false;
+    loopClicked0 = false;
 
-  // loop down  
+  // loop down
   if (digitalRead(loop_down) == HIGH && loop_number > 0 && loopClicked1 == false)
   {
     loop_change_down = true;
     change_cstr = '1';
     loopClicked1 = true;
   }
-  
+
   else if (digitalRead(loop_down) == LOW && loopClicked1 == true)
-  loopClicked1 = false;
+    loopClicked1 = false;
 }
 
 void send_settings()
-{ 
+{
   // Create a string of all settings
-  
+  Serial.println("Send");
   // Zero padding for loop_number
   char loop_padding = '\0';
   if (loop_number < 10)
-  loop_padding = '0';
+    loop_padding = '0';
 
   // Zero padding for tempo. Combine into one array
   char tempo_padding_0 = '\0';
@@ -2548,54 +2553,60 @@ void send_settings()
     tempo_padding_0 = '0';
 
     if (tempo < 10)
-    tempo_padding_1 = '0';
+      tempo_padding_1 = '0';
   }
 
   // Zero padding for channel
   char channel_padding = '\0';
   if (channel < 10)
-  channel_padding = '0';
+    channel_padding = '0';
 
   // Get string of steps
   String all_steps = steps_string();
-  
+
   // Combined settings string
-  String combine =String(loop_padding)+String(loop_number)+String(tempo_padding_0)+String(tempo_padding_1)+String(maxCount)+String(channel_padding)+String(channel)+String(change_cstr)+all_steps+String('\0');
+  String combine = String(loop_padding) + String(loop_number) + String(tempo_padding_0) + String(tempo_padding_1) + String(maxCount) + String(channel_padding) + String(channel) + String(change_cstr) + all_steps + String('\0');
   // Convert string to char array
-  combine.toCharArray(current_settings,263); 
+  combine.toCharArray(current_settings, 263);
 
   // Send settings to slave
-  for (int x = 0; x < 8; x ++)
+  for (int x = 0; x < 9; x ++)
   {
     for (int y = 0; y < 30; y ++)
     {
       Wire.beginTransmission(8);                // transmit to device #8
-      Wire.write(current_settings[30*x + y]);              
-      Wire.endTransmission();                   // stop transmitting
+      Wire.write(current_settings[30 * x + y]);
+      Wire.endTransmission();
+      Serial.print(current_settings[30 * x + y]);
     }
   }
+  Serial.println(' ');
 }
 
 void load_settings ()
 {
+  Serial.println("LOADING");
   int load_package = 0;
 
   while (load_package < 8)
   {
     // Read settings from slave
-    Wire.requestFrom(8, 30); 
-    
-    while (Wire.available()) 
-    { 
-    for (byte i = 0; i < 30 ; i ++)
+    //Serial.println("REQUESTING");
+    Wire.requestFrom(8, 30);
+    //Serial.println("Requested");
+    while (Wire.available())
+    {
+      for (byte i = 0; i < 30 ; i ++)
       {
         char c = Wire.read();
-        new_settings[30*load_package + i] = c;
+        //Serial.println(c);
+        new_settings[30 * load_package + i] = c;
       }
     }
-
-   load_package ++;
+    load_package ++;
+    //delay(50);
   }
+  Serial.println(new_settings);
 }
 
 String steps_string ()
@@ -2625,24 +2636,24 @@ String steps_string ()
       str += String (steps2[i][n]);
     }
   }
-  
-    for (int i = 0; i < 4; i++)
+
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
       str += String (steps3[i][n]);
     }
   }
-  
-    for (int i = 0; i < 4; i++)
+
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
       str += String (steps4[i][n]);
     }
   }
-  
-    for (int i = 0; i < 4; i++)
+
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2650,7 +2661,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2658,7 +2669,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2666,7 +2677,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2674,7 +2685,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2682,7 +2693,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2690,7 +2701,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2698,7 +2709,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2706,7 +2717,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2714,7 +2725,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
@@ -2722,7 +2733,7 @@ String steps_string ()
     }
   }
 
-    for (int i = 0; i < 4; i++)
+  for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
     {
