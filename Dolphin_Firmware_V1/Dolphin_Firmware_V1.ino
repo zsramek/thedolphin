@@ -7,8 +7,8 @@
 //tempo already -> maxCount
 //channel already -> channel + bank
 // Save and load settings arrays
-char new_settings[263];
-char current_settings[263];
+char new_settings[270];
+char current_settings[270];
 // UI buttons
 int loop_up = 6;
 int loop_down = 7;
@@ -2565,23 +2565,36 @@ void send_settings()
   combine.toCharArray(current_settings,263); 
 
   // Send settings to slave
-  Wire.beginTransmission(8);     // transmit to device #8
-  Wire.write(current_settings);              
-  Wire.endTransmission();        // stop transmitting
+  for (int x = 0; x < 8; x ++)
+  {
+    for (int y = 0; y < 30; y ++)
+    {
+      Wire.beginTransmission(8);                // transmit to device #8
+      Wire.write(current_settings[30*x + y]);              
+      Wire.endTransmission();                   // stop transmitting
+    }
+  }
 }
 
 void load_settings ()
 {
-  // Read settings from slave
-  Wire.requestFrom(8, 263); 
-  
-  while (Wire.available()) 
-  { 
-  for (byte i = 0; i < 263 ; i ++)
-    {
-      char c = Wire.read();
-      new_settings[i] = c;
+  int load_package = 0;
+
+  while (load_package < 8)
+  {
+    // Read settings from slave
+    Wire.requestFrom(8, 30); 
+    
+    while (Wire.available()) 
+    { 
+    for (byte i = 0; i < 30 ; i ++)
+      {
+        char c = Wire.read();
+        new_settings[30*load_package + i] = c;
+      }
     }
+
+   load_package ++;
   }
 }
 
