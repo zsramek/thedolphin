@@ -2,6 +2,7 @@
 //I2C interfacing - need to test
 //Write code to take the loaded data and update the registers
 //Clean up the tempo function
+//Live play doesn't work if it's not running
 
 #include <Wire.h>
 
@@ -267,10 +268,6 @@ void loop()
     scanButtons();
     refreshLEDs();
   }
-  //  else
-  //  {
-  //    send_settings();
-  //  }
 
   updateChannelData();
   scanRotary();
@@ -1629,16 +1626,22 @@ void liveTrigger()
       digitalWrite(triggerOut0, HIGH);
       liveTrigCount0++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount0 = 0;
+      trigger0 = false;
+    }
     else
     {
       digitalWrite(triggerOut0, LOW);
-      liveTrigCount0 = 0;
-      trigger0 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut0, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut0, LOW);
+    }
     liveTrigCount0 = 0;
   }
 
@@ -1652,16 +1655,22 @@ void liveTrigger()
       digitalWrite(triggerOut1, HIGH);
       liveTrigCount1++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount1 = 0;
+      trigger1 = false;
+    }
     else
     {
       digitalWrite(triggerOut1, LOW);
-      liveTrigCount1 = 0;
-      trigger1 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut1, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut1, LOW);
+    }
     liveTrigCount1 = 0;
   }
 
@@ -1675,16 +1684,22 @@ void liveTrigger()
       digitalWrite(triggerOut2, HIGH);
       liveTrigCount2++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount2 = 0;
+      trigger2 = false;
+    }
     else
     {
       digitalWrite(triggerOut2, LOW);
-      liveTrigCount2 = 0;
-      trigger2 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut2, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut2, LOW);
+    }
     liveTrigCount2 = 0;
   }
 
@@ -1698,16 +1713,22 @@ void liveTrigger()
       digitalWrite(triggerOut3, HIGH);
       liveTrigCount3++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount3 = 0;
+      trigger3 = false;
+    }
     else
     {
       digitalWrite(triggerOut3, LOW);
-      liveTrigCount3 = 0;
-      trigger3 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut3, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut3, LOW);
+    }
     liveTrigCount3 = 0;
   }
 
@@ -1721,16 +1742,22 @@ void liveTrigger()
       digitalWrite(triggerOut4, HIGH);
       liveTrigCount4++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount4 = 0;
+      trigger4 = false;
+    }
     else
     {
       digitalWrite(triggerOut4, LOW);
-      liveTrigCount4 = 0;
-      trigger4 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut4, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut4, LOW);
+    }
     liveTrigCount4 = 0;
   }
 
@@ -1744,16 +1771,22 @@ void liveTrigger()
       digitalWrite(triggerOut5, HIGH);
       liveTrigCount5++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount5 = 0;
+      trigger5 = false;
+    }
     else
     {
       digitalWrite(triggerOut5, LOW);
-      liveTrigCount5 = 0;
-      trigger5 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut5, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut5, LOW);
+    }
     liveTrigCount5 = 0;
   }
 
@@ -1767,16 +1800,22 @@ void liveTrigger()
       digitalWrite(triggerOut6, HIGH);
       liveTrigCount6++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount6 = 0;
+      trigger6 = false;
+    }
     else
     {
       digitalWrite(triggerOut6, LOW);
-      liveTrigCount6 = 0;
-      trigger6 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut6, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut6, LOW);
+    }
     liveTrigCount6 = 0;
   }
 
@@ -1790,16 +1829,22 @@ void liveTrigger()
       digitalWrite(triggerOut7, HIGH);
       liveTrigCount7++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount7 = 0;
+      trigger7 = false;
+    }
     else
     {
       digitalWrite(triggerOut7, LOW);
-      liveTrigCount7 = 0;
-      trigger7 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut7, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut7, LOW);
+    }
     liveTrigCount7 = 0;
   }
 
@@ -1813,16 +1858,22 @@ void liveTrigger()
       digitalWrite(triggerOut8, HIGH);
       liveTrigCount8++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount8 = 0;
+      trigger8 = false;
+    }
     else
     {
       digitalWrite(triggerOut8, LOW);
-      liveTrigCount8 = 0;
-      trigger8 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut8, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut8, LOW);
+    }
     liveTrigCount8 = 0;
   }
 
@@ -1836,16 +1887,22 @@ void liveTrigger()
       digitalWrite(triggerOut9, HIGH);
       liveTrigCount9++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount9 = 0;
+      trigger9 = false;
+    }
     else
     {
       digitalWrite(triggerOut9, LOW);
-      liveTrigCount9 = 0;
-      trigger9 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut9, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut9, LOW);
+    }
     liveTrigCount9 = 0;
   }
 
@@ -1859,16 +1916,22 @@ void liveTrigger()
       digitalWrite(triggerOut10, HIGH);
       liveTrigCount10++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount10 = 0;
+      trigger10 = false;
+    }
     else
     {
       digitalWrite(triggerOut10, LOW);
-      liveTrigCount10 = 0;
-      trigger10 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut10, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut10, LOW);
+    }
     liveTrigCount10 = 0;
   }
 
@@ -1882,16 +1945,22 @@ void liveTrigger()
       digitalWrite(triggerOut11, HIGH);
       liveTrigCount11++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount11 = 0;
+      trigger11 = false;
+    }
     else
     {
       digitalWrite(triggerOut11, LOW);
-      liveTrigCount11 = 0;
-      trigger11 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut11, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut11, LOW);
+    }
     liveTrigCount11 = 0;
   }
 
@@ -1905,16 +1974,22 @@ void liveTrigger()
       digitalWrite(triggerOut12, HIGH);
       liveTrigCount12++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount12 = 0;
+      trigger12 = false;
+    }
     else
     {
       digitalWrite(triggerOut12, LOW);
-      liveTrigCount12 = 0;
-      trigger12 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut12, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut12, LOW);
+    }
     liveTrigCount12 = 0;
   }
 
@@ -1928,16 +2003,22 @@ void liveTrigger()
       digitalWrite(triggerOut13, HIGH);
       liveTrigCount13++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount13 = 0;
+      trigger13 = false;
+    }
     else
     {
       digitalWrite(triggerOut13, LOW);
-      liveTrigCount13 = 0;
-      trigger13 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut13, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut13, LOW);
+    }
     liveTrigCount13 = 0;
   }
 
@@ -1951,16 +2032,22 @@ void liveTrigger()
       digitalWrite(triggerOut14, HIGH);
       liveTrigCount14++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount14 = 0;
+      trigger14 = false;
+    }
     else
     {
       digitalWrite(triggerOut14, LOW);
-      liveTrigCount14 = 0;
-      trigger14 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut14, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut14, LOW);
+    }
     liveTrigCount14 = 0;
   }
 
@@ -1968,23 +2055,28 @@ void liveTrigger()
 
   if (trigger15 == true)
   {
-    //Serial.println("FUCK");
     //Triggers
     if (liveTrigCount15 < trigCount)
     {
       digitalWrite(triggerOut15, HIGH);
       liveTrigCount15++;
     }
+    else if (count < trigCount)
+    {
+      liveTrigCount15 = 0;
+      trigger15 = false;
+    }
     else
     {
       digitalWrite(triggerOut15, LOW);
-      liveTrigCount15 = 0;
-      trigger15 = false;
     }
   }
   else
   {
-    digitalWrite(triggerOut15, LOW);
+    if (count >= trigCount)
+    {
+      digitalWrite(triggerOut15, LOW);
+    }
     liveTrigCount15 = 0;
   }
 }
@@ -2019,6 +2111,10 @@ void startStop()
       turnOffLEDs();
       currentStep = maxStep;
       count = maxCount;
+      if (run == false)
+      {
+        send_settings();
+      }
     }
   }
   else if (digitalRead(startStopButton) == LOW)
@@ -2063,7 +2159,6 @@ void runSeq()
     else
     {
       currentStep = 0;
-      send_settings();
     }
     decodeStep();
   }
