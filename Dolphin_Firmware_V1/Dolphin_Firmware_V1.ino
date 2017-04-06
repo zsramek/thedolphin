@@ -1,5 +1,7 @@
 //TODO
 //I2C interfacing - need to test
+//Write code to take the loaded data and update the registers
+//Clean up the tempo function
 
 #include <Wire.h>
 
@@ -9,6 +11,8 @@
 // Save and load settings arrays
 char new_settings[270];
 char current_settings[270];
+char loopOnly = '0';
+
 // UI buttons
 int loop_up = 7;
 int loop_down = 6;
@@ -99,23 +103,23 @@ int channel = 0;
 int bank = 0;
 
 //TRIGGERING
-boolean steps[4][4];
-boolean steps0[4][4];
-boolean steps1[4][4];
-boolean steps2[4][4];
-boolean steps3[4][4];
-boolean steps4[4][4];
-boolean steps5[4][4];
-boolean steps6[4][4];
-boolean steps7[4][4];
-boolean steps8[4][4];
-boolean steps9[4][4];
-boolean steps10[4][4];
-boolean steps11[4][4];
-boolean steps12[4][4];
-boolean steps13[4][4];
-boolean steps14[4][4];
-boolean steps15[4][4];
+volatile boolean steps[4][4];
+volatile boolean steps0[4][4];
+volatile boolean steps1[4][4];
+volatile boolean steps2[4][4];
+volatile boolean steps3[4][4];
+volatile boolean steps4[4][4];
+volatile boolean steps5[4][4];
+volatile boolean steps6[4][4];
+volatile boolean steps7[4][4];
+volatile boolean steps8[4][4];
+volatile boolean steps9[4][4];
+volatile boolean steps10[4][4];
+volatile boolean steps11[4][4];
+volatile boolean steps12[4][4];
+volatile boolean steps13[4][4];
+volatile boolean steps14[4][4];
+volatile boolean steps15[4][4];
 
 //Trigger Output Pins
 int triggerOut0 = 38;
@@ -263,10 +267,10 @@ void loop()
     scanButtons();
     refreshLEDs();
   }
-//  else
-//  {
-//    send_settings();
-//  }
+  //  else
+  //  {
+  //    send_settings();
+  //  }
 
   updateChannelData();
   scanRotary();
@@ -433,17 +437,8 @@ void seqSetup()
 //I2C
 void i2c()
 {
-  // Slow for testing
-  //delay(1000);
-
-  // Determine if loop changes and load settings
   loop_change();
-
   pollLoopButtons();
-
-  // Move send_settings to pollLoopButtons after each poll
-  // To increase the update rate of the LCD
-//  send_settings();
 }
 
 //TEMPO
@@ -2498,7 +2493,10 @@ void loop_change()
 {
   if ( loop_change_up == true)
   {
-    loop_number ++;
+    loop_number++;
+    loopOnly = '1';
+    send_settings();
+    loopOnly = '0';
     load_settings();
     loop_change_up = false;
   }
@@ -2506,6 +2504,11 @@ void loop_change()
   if ( loop_change_down == true)
   {
     loop_number --;
+    //set char
+    loopOnly = '1';
+    send_settings();
+    //set it back
+    loopOnly = '0';
     load_settings();
     loop_change_down = false;
   }
@@ -2522,7 +2525,9 @@ void pollLoopButtons()
   }
 
   else if (digitalRead(loop_up) == LOW && loopClicked0 == true)
+  {
     loopClicked0 = false;
+  }
 
   // loop down
   if (digitalRead(loop_down) == HIGH && loop_number > 0 && loopClicked1 == false)
@@ -2533,13 +2538,18 @@ void pollLoopButtons()
   }
 
   else if (digitalRead(loop_down) == LOW && loopClicked1 == true)
+  {
     loopClicked1 = false;
+  }
 }
 
 void send_settings()
 {
+
+  updateChannelData();
   // Create a string of all settings
   Serial.println("Send");
+  printSteps();
   // Zero padding for loop_number
   char loop_padding = '\0';
   if (loop_number < 10)
@@ -2565,7 +2575,7 @@ void send_settings()
   String all_steps = steps_string();
 
   // Combined settings string
-  String combine = String(loop_padding) + String(loop_number) + String(tempo_padding_0) + String(tempo_padding_1) + String(maxCount) + String(channel_padding) + String(channel) + String(change_cstr) + all_steps + String('\0');
+  String combine = String(loopOnly) + String(loop_padding) + String(loop_number) + String(tempo_padding_0) + String(tempo_padding_1) + String(maxCount) + String(channel_padding) + String(channel) + String(change_cstr) + all_steps + String('\0');
   // Convert string to char array
   combine.toCharArray(current_settings, 263);
 
@@ -2586,6 +2596,7 @@ void send_settings()
 void load_settings ()
 {
   Serial.println("LOADING");
+  turnOffLEDs();
   int load_package = 0;
 
   while (load_package < 8)
@@ -2604,15 +2615,404 @@ void load_settings ()
       }
     }
     load_package ++;
-    //delay(50);
+    delay(50);
   }
+  Serial.println("new_settings:");
   Serial.println(new_settings);
+  loadData();
+}
+
+void loadData()
+{
+  //Loop Number
+  String loopString = String(new_settings[1]) + String(new_settings[2]);
+  loop_number = loopString.toInt();
+  Serial.println("loop_number:");
+  Serial.println(loop_number);
+  //Steps
+  int a = 0;
+  int b = 0;
+  int c = 0;
+  char data[1];
+
+  for(int j = 0; j < 4; j ++)
+  {      
+    for(int k = 0; k < 4; k ++)
+    {
+      data[0] = new_settings[4*j + k + 9];
+      c = atoi(data);       
+      steps0[j][k] = c;
+      //Serial.println(data);
+      
+      data[0] = new_settings[4*j + k + 1*16 + 9];
+      c = atoi(data);
+      steps1[j][k] = c;
+      
+      data[0] = new_settings[4*j + k + 2*16 + 9];
+      c = atoi(data);
+      steps2[j][k] = c;
+      
+      data[0] = new_settings[4*j + k + 3*16 + 9];
+      c = atoi(data);
+      steps3[j][k] = c;
+      
+      data[0] = new_settings[4*j + k + 4*16 + 9];
+      c = atoi(data);
+      steps4[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 5*16 + 9];
+      c = atoi(data);
+      steps5[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 6*16 + 9];
+      c = atoi(data);
+      steps6[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 7*16 + 9];
+      c = atoi(data);
+      steps7[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 8*16 + 9];
+      c = atoi(data);
+      steps8[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 9*16 + 9];
+      c = atoi(data);
+      steps9[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 10*16 + 9];
+      c = atoi(data);
+      steps10[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 11*16 + 9];
+      c = atoi(data);
+      steps11[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 12*16 + 9];
+      c = atoi(data);
+      steps12[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 13*16 + 9];
+      c = atoi(data);
+      steps13[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 14*16 + 9];
+      c = atoi(data);
+      steps14[j][k] = c;
+
+      data[0] = new_settings[4*j + k + 15*16 + 9];
+      c = atoi(data);
+      steps15[j][k] = c;
+    }
+  }
+  
+//  for (int i = 9; i < 264; i++)
+//  {
+//    //Serial.println("LOADING DATA");
+//    if (i < 24)
+//    {
+//      data = String(new_settings[i]);
+//      steps0[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 40)
+//    {
+//      data = String(new_settings[i]);
+//      steps1[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//    }
+//    else if (i < 56)
+//    {
+//      data = String(new_settings[i]);
+//      steps2[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 72)
+//    {
+//      data = String(new_settings[i]);
+//      steps3[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 88)
+//    {
+//      data = String(new_settings[i]);
+//      steps4[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 104)
+//    {
+//      data = String(new_settings[i]);
+//      steps5[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 120)
+//    {
+//      data = String(new_settings[i]);
+//      steps6[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 136)
+//    {
+//      data = String(new_settings[i]);
+//      steps7[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 152)
+//    {
+//      data = String(new_settings[i]);
+//      steps8[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 168)
+//    {
+//      data = String(new_settings[i]);
+//      steps9[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 184)
+//    {
+//      data = String(new_settings[i]);
+//      steps10[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 200)
+//    {
+//      data = String(new_settings[i]);
+//      steps11[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 216)
+//    {
+//      data = String(new_settings[i]);
+//      steps12[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 232)
+//    {
+//      data = String(new_settings[i]);
+//      steps13[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 248)
+//    {
+//      data = String(new_settings[i]);
+//      steps14[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//    else if (i < 264)
+//    {
+//      data = String(new_settings[i]);
+//      steps15[a][b] = data.toInt();
+//      if (b < 3)
+//      {
+//        b++;
+//      }
+//      else
+//      {
+//        b = 0;
+//        a++;
+//      }
+//      if (a <= 4)
+//      {
+//        a = 0;
+//      }
+//    }
+//  }
+  Serial.println("1st Print");
+  printSteps();
+  //put it here?
+  //updateChannelData();
+  updateSteps();
+  //alignSteps();
+  //updateChannelData();
+  Serial.println("2nd Print");
+  printSteps();
+  updateChannelData();
+  alignSteps();
+  refreshLEDs();
+  send_settings();
+  turnOffLEDs();
 }
 
 String steps_string ()
 {
   String str;
-
   for (int i = 0; i < 4; i++)
   {
     for (int n = 0; n < 4; n++)
@@ -2743,3 +3143,222 @@ String steps_string ()
 
   return str;
 }
+
+void printSteps()
+{
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps0[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps1[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps2[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps3[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps4[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps5[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps6[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps7[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps8[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps9[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps10[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps11[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps12[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps13[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps14[g][h]);
+    }
+  }
+  Serial.println(' ');
+  for (int g = 0; g < 4; g++)
+  {
+    for (int h = 0; h < 4; h++)
+    {
+      Serial.print(steps15[g][h]);
+    }
+  }
+  Serial.println(' ');
+  Serial.println(' ');
+}
+
+void updateSteps()
+{
+
+  //  for (int i = 0; i < 4; i++)
+  //  {
+  //    for (int j = 0; j < 4; j++)
+  //    {
+  //      steps[i][j] = 0;
+  //    }
+  //  }
+
+  if (channel == 0)
+  {
+    memcpy(steps, steps0, sizeof steps0);
+  }
+  else if (channel == 1)
+  {
+    memcpy(steps, steps1, sizeof steps1);
+  }
+  else if (channel == 2)
+  {
+    memcpy(steps, steps2, sizeof steps2);
+  }
+  else if (channel == 3)
+  {
+    memcpy(steps, steps3, sizeof steps3);
+  }
+  else if (channel == 4)
+  {
+    memcpy(steps, steps4, sizeof steps4);
+  }
+  else if (channel == 5)
+  {
+    memcpy(steps, steps5, sizeof steps5);
+  }
+  else if (channel == 6)
+  {
+    memcpy(steps, steps6, sizeof steps6);
+  }
+  else if (channel == 7)
+  {
+    memcpy(steps, steps7, sizeof steps7);
+  }
+  else if (channel == 8)
+  {
+    memcpy(steps, steps8, sizeof steps8);
+  }
+  else if (channel == 9)
+  {
+    memcpy(steps, steps9, sizeof steps9);
+  }
+  else if (channel == 10)
+  {
+    memcpy(steps, steps10, sizeof steps10);
+  }
+  else if (channel == 11)
+  {
+    memcpy(steps, steps11, sizeof steps11);
+  }
+  else if (channel == 12)
+  {
+    memcpy(steps, steps12, sizeof steps12);
+  }
+  else if (channel == 13)
+  {
+    memcpy(steps, steps13, sizeof steps13);
+  }
+  else if (channel == 14)
+  {
+    memcpy(steps, steps14, sizeof steps14);
+  }
+  else if (channel == 15)
+  {
+    memcpy(steps, steps15, sizeof steps15);
+  }
+}
+
